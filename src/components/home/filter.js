@@ -67,7 +67,7 @@ const parallelGatewayIds = [
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    height: 250
+    height: 90
   },
   input: {
     display: "flex",
@@ -108,9 +108,6 @@ const styles = theme => ({
     marginTop: theme.spacing.unit,
     left: 0,
     right: 0
-  },
-  divider: {
-    height: theme.spacing.unit * 2
   }
 });
 
@@ -263,7 +260,7 @@ class Filters extends React.Component {
 
     return (
       <Grid container spacing={24}>
-        <Grid item xs={2} className={classes.root}>
+        <Grid item xs={3} className={classes.root}>
           <NoSsr>
             <Select
               classes={classes}
@@ -277,7 +274,7 @@ class Filters extends React.Component {
             />
           </NoSsr>
         </Grid>
-        <Grid item xs={2} className={classes.root}>
+        <Grid item xs={3} className={classes.root}>
           <NoSsr>
             <Select
               classes={classes}
@@ -291,7 +288,7 @@ class Filters extends React.Component {
             />
           </NoSsr>
         </Grid>
-        <Grid item xs={2} className={classes.root}>
+        <Grid item xs={3} className={classes.root}>
           <NoSsr>
             <Select
               classes={classes}
@@ -305,7 +302,7 @@ class Filters extends React.Component {
             />
           </NoSsr>
         </Grid>
-        <Grid item xs={2} className={classes.root}>
+        <Grid item xs={3} className={classes.root}>
           <NoSsr>
             <Select
               classes={classes}
@@ -319,7 +316,7 @@ class Filters extends React.Component {
             />
           </NoSsr>
         </Grid>
-        <Grid item xs={2} className={classes.root}>
+        <Grid item xs={3} className={classes.root}>
           <NoSsr>
             <Select
               classes={classes}

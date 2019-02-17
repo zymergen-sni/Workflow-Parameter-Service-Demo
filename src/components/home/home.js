@@ -11,6 +11,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Collapse from '@material-ui/core/Collapse';
 import Select from '@material-ui/core/Select';
 import Filters from './filter';
+import MainPanel from './panel'
 
 const styles = theme => ({
   root: {
@@ -136,6 +137,7 @@ class Home extends React.Component {
             </Collapse>
           </Grid>
         </Grid>
+        <MainPanel />
       </div>
     );
   }
