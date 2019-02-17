@@ -6,6 +6,28 @@ import MuiExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import Typography from "@material-ui/core/Typography";
 import ParamSetList from "./paramSetList";
 import Drawer from "@material-ui/core/Drawer";
+import ParamSet from "../paramSet/paramSet";
+import ReactPaginate from "react-paginate";
+import AddIcon from "@material-ui/icons/Add";
+import Button from "@material-ui/core/Button";
+
+const styles = {
+  paginate: {
+    "& ul": {
+      display: "inline-block",
+      paddingLeft: 15,
+      paddingRight: 15,
+      fontSize: 16
+    },
+
+    "& li": {
+      display: "inline-block",
+      marginRight: 15,
+      color: "#3887ad",
+      fontWeight: 550
+    }
+  }
+};
 
 const ExpansionPanel = withStyles({
   root: {
@@ -25,7 +47,7 @@ const ExpansionPanel = withStyles({
 
 const ExpansionPanelSummary = withStyles({
   root: {
-    backgroundColor: "#538290",
+    backgroundColor: "#448bcc",
     borderBottom: "1px solid rgba(0,0,0,.125)",
     marginBottom: -1,
     minHeight: 56,
@@ -135,6 +157,262 @@ class MainPanel extends React.Component {
             ]
           }
         ]
+      },
+
+      {
+        name: "E0001_call2:F1002_call1:M6677",
+        version: 1,
+        parameterSets: [
+          {
+            isDefault: true,
+            parameterSet: [
+              {
+                variable: "tecanParams",
+                paramSet: "tecan_echo_002"
+              },
+              {
+                variable: "poolSettings",
+                paramSet: "pooling_settings_003"
+              }
+            ]
+          },
+          {
+            parameterSet: [
+              {
+                variable: "tecanParams",
+                paramSet: "tecan_echo_003"
+              },
+              {
+                variable: "poolSettings",
+                paramSet: "pooling_settings_004"
+              }
+            ]
+          }
+        ]
+      },
+
+      {
+        name: "G0001_call2:W1019_call1:M6679",
+        version: 1,
+        parameterSets: [
+          {
+            isDefault: true,
+            parameterSet: [
+              {
+                variable: "tecanParams",
+                paramSet: "tecan_echo_002"
+              },
+              {
+                variable: "poolSettings",
+                paramSet: "pooling_settings_003"
+              }
+            ]
+          },
+          {
+            parameterSet: [
+              {
+                variable: "tecanParams",
+                paramSet: "tecan_echo_003"
+              },
+              {
+                variable: "poolSettings",
+                paramSet: "pooling_settings_004"
+              }
+            ]
+          }
+        ]
+      },
+
+      {
+        name: "F0001_call2:B1008_call1:A1001",
+        version: 1,
+        parameterSets: [
+          {
+            isDefault: true,
+            parameterSet: [
+              {
+                variable: "tecanParams",
+                paramSet: "tecan_echo_002"
+              },
+              {
+                variable: "poolSettings",
+                paramSet: "pooling_settings_003"
+              }
+            ]
+          },
+          {
+            parameterSet: [
+              {
+                variable: "tecanParams",
+                paramSet: "tecan_echo_003"
+              },
+              {
+                variable: "poolSettings",
+                paramSet: "pooling_settings_004"
+              }
+            ]
+          }
+        ]
+      },
+
+      {
+        name: "B0001_call3:W1008_call2:G1022",
+        version: 1,
+        parameterSets: [
+          {
+            isDefault: true,
+            parameterSet: [
+              {
+                variable: "tecanParams",
+                paramSet: "tecan_echo_002"
+              },
+              {
+                variable: "poolSettings",
+                paramSet: "pooling_settings_003"
+              }
+            ]
+          },
+          {
+            parameterSet: [
+              {
+                variable: "tecanParams",
+                paramSet: "tecan_echo_003"
+              },
+              {
+                variable: "poolSettings",
+                paramSet: "pooling_settings_004"
+              }
+            ]
+          }
+        ]
+      },
+
+      {
+        name: "C0001_call4:Z1008_call1:E2990",
+        version: 1,
+        parameterSets: [
+          {
+            isDefault: true,
+            parameterSet: [
+              {
+                variable: "tecanParams",
+                paramSet: "tecan_echo_002"
+              },
+              {
+                variable: "poolSettings",
+                paramSet: "pooling_settings_003"
+              }
+            ]
+          },
+          {
+            parameterSet: [
+              {
+                variable: "tecanParams",
+                paramSet: "tecan_echo_003"
+              },
+              {
+                variable: "poolSettings",
+                paramSet: "pooling_settings_004"
+              }
+            ]
+          }
+        ]
+      },
+
+      {
+        name: "B0001_call2:W1008_call1:G2000",
+        version: 1,
+        parameterSets: [
+          {
+            isDefault: true,
+            parameterSet: [
+              {
+                variable: "tecanParams",
+                paramSet: "tecan_echo_002"
+              },
+              {
+                variable: "poolSettings",
+                paramSet: "pooling_settings_003"
+              }
+            ]
+          },
+          {
+            parameterSet: [
+              {
+                variable: "tecanParams",
+                paramSet: "tecan_echo_003"
+              },
+              {
+                variable: "poolSettings",
+                paramSet: "pooling_settings_004"
+              }
+            ]
+          }
+        ]
+      },
+
+      {
+        name: "C0001_call2:W1008_call1:G2000",
+        version: 1,
+        parameterSets: [
+          {
+            isDefault: true,
+            parameterSet: [
+              {
+                variable: "tecanParams",
+                paramSet: "tecan_echo_002"
+              },
+              {
+                variable: "poolSettings",
+                paramSet: "pooling_settings_003"
+              }
+            ]
+          },
+          {
+            parameterSet: [
+              {
+                variable: "tecanParams",
+                paramSet: "tecan_echo_003"
+              },
+              {
+                variable: "poolSettings",
+                paramSet: "pooling_settings_004"
+              }
+            ]
+          }
+        ]
+      },
+
+      {
+        name: "B0001_call5:C1_call1:E1029",
+        version: 1,
+        parameterSets: [
+          {
+            isDefault: true,
+            parameterSet: [
+              {
+                variable: "tecanParams",
+                paramSet: "tecan_echo_002"
+              },
+              {
+                variable: "poolSettings",
+                paramSet: "pooling_settings_003"
+              }
+            ]
+          },
+          {
+            parameterSet: [
+              {
+                variable: "tecanParams",
+                paramSet: "tecan_echo_003"
+              },
+              {
+                variable: "poolSettings",
+                paramSet: "pooling_settings_004"
+              }
+            ]
+          }
+        ]
       }
     ]
   };
@@ -159,16 +437,32 @@ class MainPanel extends React.Component {
     });
   };
 
-  toggleDrawer = (show) => () => {
+  toggleDrawer = show => () => {
     this.setState(state => ({
       showParamSetDrawer: show === undefined ? !state.showParamSetDrawer : show
     }));
   };
 
+  handlePageClick = () => {};
+
   render() {
     const { expanded } = this.state;
+    const { classes, theme } = this.props;
     return (
-      <div>
+      <div className={classes.paginate}>
+        <ReactPaginate
+          previousLabel={"<"}
+          nextLabel={">"}
+          breakLabel={"..."}
+          breakClassName={"break-me"}
+          pageCount={21}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          onPageChange={this.handlePageClick}
+          containerClassName={"pagination"}
+          subContainerClassName={"pages pagination"}
+          activeClassName={"active"}
+        />
         {this.state.usageContexts.map((item, key) => (
           <ExpansionPanel
             key={item.name + item.version}
@@ -187,6 +481,10 @@ class MainPanel extends React.Component {
                   toggleDrawer={this.toggleDrawer()}
                 />
               ))}
+              <Button variant="contained" className={classes.button}>
+                Create New Parmeter Set
+                <AddIcon />
+              </Button>
             </ExpansionPanelDetails>
           </ExpansionPanel>
         ))}
@@ -195,13 +493,8 @@ class MainPanel extends React.Component {
           open={this.state.showParamSetDrawer}
           onClose={this.toggleDrawer(false)}
         >
-          <div
-            tabIndex={0}
-            role="button"
-            onClick={this.toggleDrawer(false)}
-            onKeyDown={this.toggleDrawer(false)}
-          >
-            test
+          <div tabIndex={0} role="button">
+            <ParamSet />
           </div>
         </Drawer>
       </div>
@@ -209,4 +502,4 @@ class MainPanel extends React.Component {
   }
 }
 
-export default MainPanel;
+export default withStyles(styles, { withTheme: true })(MainPanel);

@@ -46,7 +46,7 @@ function ListItemLink(props) {
   return <ListItem button component="a" {...props} />;
 }
 
-const options = ["Clone", "Set as default", "Edit variable"];
+const options = ["Clone", "Set as default", "Edit variable", "Associate with other"];
 
 const ITEM_HEIGHT = 48;
 

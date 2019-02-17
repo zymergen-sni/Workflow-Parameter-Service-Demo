@@ -20,6 +20,8 @@ import Settings from "./components/settings/settings";
 import CreateParamSet from "./components/paramSet/createParamSet";
 import createUsageContext from "./components/usageContext/createUsageContext";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import BackgroundImg from "./assets/header.jpg";
+import paramSet from "./components/paramSet/paramSet";
 
 const drawerWidth = 240;
 
@@ -28,7 +30,9 @@ const styles = theme => ({
     display: "flex"
   },
   toolbar: {
-    paddingRight: 24 // keep right padding when drawer closed
+    paddingRight: 24, // keep right padding when drawer closed
+    background: '#0000008f',
+    
   },
   toolbarIcon: {
     display: "flex",
@@ -38,6 +42,11 @@ const styles = theme => ({
     ...theme.mixins.toolbar
   },
   appBar: {
+    background: '#0f3052',
+    backgroundImage: `url(${BackgroundImg})`,
+    backgroundSize:'800px 280px',
+    backgroundPosition: 'right',
+    backgroundRepeat: 'no-repeat',
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
@@ -183,8 +192,12 @@ class Dashboard extends React.Component {
             <Typography variant="h4" gutterBottom component="h2">
               <Route exact path="/" component={Home} />
               <Route path="/createParamSet" component={CreateParamSet} />
-              <Route path="/createUsageContext" component={createUsageContext} />
+              <Route
+                path="/createUsageContext"
+                component={createUsageContext}
+              />
               <Route path="/settings" component={Settings} />
+              <Route path="/paramSet" component={paramSet} />
             </Typography>
           </main>
         </div>
