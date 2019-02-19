@@ -19,7 +19,7 @@ import Home from "./components/home/home";
 import Settings from "./components/settings/settings";
 import CreateParamSet from "./components/paramSet/createParamSet";
 import createUsageContext from "./components/usageContext/createUsageContext";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Route, withRouter } from "react-router-dom";
 import BackgroundImg from "./assets/header.jpg";
 import paramSet from "./components/paramSet/paramSet";
 
@@ -31,8 +31,7 @@ const styles = theme => ({
   },
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
-    background: '#0000008f',
-    
+    background: "#0000008f"
   },
   toolbarIcon: {
     display: "flex",
@@ -42,11 +41,11 @@ const styles = theme => ({
     ...theme.mixins.toolbar
   },
   appBar: {
-    background: '#0f3052',
+    background: "#0f3052",
     backgroundImage: `url(${BackgroundImg})`,
-    backgroundSize:'800px 280px',
-    backgroundPosition: 'right',
-    backgroundRepeat: 'no-repeat',
+    backgroundSize: "800px 280px",
+    backgroundPosition: "right",
+    backgroundRepeat: "no-repeat",
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
@@ -111,7 +110,8 @@ const styles = theme => ({
 
 class Dashboard extends React.Component {
   state = {
-    open: true
+    open: true,
+    title: "Usage Context Set"
   };
 
   handleDrawerOpen = () => {
@@ -123,85 +123,102 @@ class Dashboard extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
-
+    const { classes, history } = this.props;
+    // Listen to history changes.
+    // You can unlisten by calling the constant (`unlisten()`).
+    const unlisten = history.listen((location, action) => {
+      let title = "";
+      switch (location.pathname) {
+        case "/createUsageContext":
+          title = "Create Usage Context";
+          break;
+        case "/createParamSet":
+          title = "Create Parameter Set";
+          break;
+        case "/settings":
+          title = "Settings";
+          break;
+        case "/paramSets":
+          title = "Parameter Sets";
+          break;
+        default:
+          title = "Usage Context Set";
+          break;
+      }
+      this.setState({ title: title });
+    });
     return (
-      <Router>
-        <div className={classes.root}>
-          <CssBaseline />
-          <AppBar
-            position="absolute"
-            className={classNames(
-              classes.appBar,
-              this.state.open && classes.appBarShift
-            )}
+      <div className={classes.root}>
+        <CssBaseline />
+        <AppBar
+          position="absolute"
+          className={classNames(
+            classes.appBar,
+            this.state.open && classes.appBarShift
+          )}
+        >
+          <Toolbar
+            disableGutters={!this.state.open}
+            className={classes.toolbar}
           >
-            <Toolbar
-              disableGutters={!this.state.open}
-              className={classes.toolbar}
+            <IconButton
+              color="inherit"
+              aria-label="Open drawer"
+              onClick={this.handleDrawerOpen}
+              className={classNames(
+                classes.menuButton,
+                this.state.open && classes.menuButtonHidden
+              )}
             >
-              <IconButton
-                color="inherit"
-                aria-label="Open drawer"
-                onClick={this.handleDrawerOpen}
-                className={classNames(
-                  classes.menuButton,
-                  this.state.open && classes.menuButtonHidden
-                )}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography
-                component="h1"
-                variant="h6"
-                color="inherit"
-                noWrap
-                className={classes.title}
-              >
-                Workflow Parameter Service
-              </Typography>
-              <IconButton color="inherit">
-                <Badge badgeContent={4} color="secondary">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
-            </Toolbar>
-          </AppBar>
-          <Drawer
-            variant="permanent"
-            classes={{
-              paper: classNames(
-                classes.drawerPaper,
-                !this.state.open && classes.drawerPaperClose
-              )
-            }}
-            open={this.state.open}
-          >
-            <div className={classes.toolbarIcon}>
-              <IconButton onClick={this.handleDrawerClose}>
-                <ChevronLeftIcon />
-              </IconButton>
-            </div>
-            <Divider />
-            <List>{mainListItems}</List>
-            <Divider />
-            <List>{secondaryListItems}</List>
-          </Drawer>
-          <main className={classes.content}>
-            <div className={classes.appBarSpacer} />
-            <Typography variant="h4" gutterBottom component="h2">
-              <Route exact path="/" component={Home} />
-              <Route path="/createParamSet" component={CreateParamSet} />
-              <Route
-                path="/createUsageContext"
-                component={createUsageContext}
-              />
-              <Route path="/settings" component={Settings} />
-              <Route path="/paramSet" component={paramSet} />
+              <MenuIcon />
+            </IconButton>
+            <Typography
+              component="h1"
+              variant="h6"
+              color="inherit"
+              noWrap
+              className={classes.title}
+            >
+              Workflow Parameter Service - {this.state.title}
             </Typography>
-          </main>
-        </div>
-      </Router>
+            <IconButton color="inherit">
+              <Badge badgeContent={4} color="secondary">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          variant="permanent"
+          classes={{
+            paper: classNames(
+              classes.drawerPaper,
+              !this.state.open && classes.drawerPaperClose
+            )
+          }}
+          open={this.state.open}
+        >
+          <div className={classes.toolbarIcon}>
+            <IconButton onClick={this.handleDrawerClose}>
+              <ChevronLeftIcon />
+            </IconButton>
+          </div>
+          <Divider />
+          <List>{mainListItems}</List>
+          <Divider />
+          <List>{secondaryListItems}</List>
+        </Drawer>
+        <main className={classes.content}>
+          <div className={classes.appBarSpacer} />
+          <Typography variant="h4" gutterBottom component="h2">
+            <Route exact path="/" component={Home} />
+            <Route path="/createParamSet" component={CreateParamSet} />
+            <Route path="/createUsageContext" component={createUsageContext} />
+            <Route path="/settings" component={Settings} />
+            <Route path="/paramSet" component={paramSet} />
+          </Typography>
+        </main>
+      </div>
     );
   }
 }
@@ -210,4 +227,4 @@ Dashboard.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Dashboard);
+export default withRouter(withStyles(styles)(Dashboard));

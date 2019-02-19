@@ -20,7 +20,7 @@ export const mainListItems = (
         <ListItemText primary="Usage context sets" />
       </ListItem>
     </Link>
-    <Link to="/">
+    <Link to="/paramSets">
       <ListItem button>
         <ListItemIcon>
           <AssignmentIcon />
