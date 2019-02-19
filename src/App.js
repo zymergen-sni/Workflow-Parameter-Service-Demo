@@ -71,8 +71,8 @@ const styles = theme => ({
     flexGrow: 1
   },
   pageName: {
-    color: '#fbe183',
-    marginLeft: 30,
+    color: "#fbe183",
+    marginLeft: 30
   },
   drawerPaper: {
     position: "relative",
@@ -126,34 +126,41 @@ class Dashboard extends React.Component {
     this.setState({ open: false });
   };
 
+  updatePathName = pathName => {
+    let title = "";
+    switch (pathName) {
+      case "/createUsageContext":
+        title = "Create Usage Context";
+        break;
+      case "/createParamSet":
+        title = "Create Parameter Set";
+        break;
+      case "/settings":
+        title = "Settings";
+        break;
+      case "/paramSets":
+        title = "Parameter Sets";
+        break;
+      case "/paramSet":
+        title = "Parameter Set Details";
+        break;
+
+      default:
+        title = "Usage Context Set";
+        break;
+    }
+    if (this.state.pageName !== title) {
+      this.setState({ pageName: title });
+    }
+  };
+
   render() {
     const { classes, history } = this.props;
+    this.updatePathName(history.location.pathname);
     // Listen to history changes.
     // You can unlisten by calling the constant (`unlisten()`).
     const unlisten = history.listen((location, action) => {
-      let title = "";
-      switch (location.pathname) {
-        case "/createUsageContext":
-          title = "Create Usage Context";
-          break;
-        case "/createParamSet":
-          title = "Create Parameter Set";
-          break;
-        case "/settings":
-          title = "Settings";
-          break;
-        case "/paramSets":
-          title = "Parameter Sets";
-          break;
-        case "/paramSet":
-          title = "Parameter Set Details";
-          break;
-
-        default:
-          title = "Usage Context Set";
-          break;
-      }
-      this.setState({ pageName: title });
+      this.updatePathName(history.location.pathname);
     });
     return (
       <div className={classes.root}>
