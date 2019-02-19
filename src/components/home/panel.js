@@ -23,10 +23,12 @@ const styles = {
     "& li": {
       display: "inline-block",
       marginRight: 15,
-      color: "#3887ad",
+      color: "#437c98",
       fontWeight: 550
     }
-  }
+  },
+  itemName: { marginRight: 10 },
+  alias: { color: "#1c1d09eb", marginRight: 10 }
 };
 
 const ExpansionPanel = withStyles({
@@ -47,19 +49,19 @@ const ExpansionPanel = withStyles({
 
 const ExpansionPanelSummary = withStyles({
   root: {
-    backgroundColor: "#448bcc",
+    backgroundColor: "#9bb5cc38",
     borderBottom: "1px solid rgba(0,0,0,.125)",
     marginBottom: -1,
-    minHeight: 56,
     "&$expanded": {
-      minHeight: 56
+      minHeight: 48
     },
-    "& *": { color: "rgba(255, 255, 255, 0.9)" }
+    "& *": { color: "rgba(113, 113, 113, 0.9)" }
   },
   content: {
     "&$expanded": {
-      margin: "12px 0"
-    }
+      margin: 0
+    },
+    margin: 0
   },
   expanded: {}
 })(props => <MuiExpansionPanelSummary {...props} />);
@@ -79,6 +81,7 @@ class MainPanel extends React.Component {
     usageContexts: [
       {
         name: "B0001:v1.0.2",
+        alias: "Tecan process_Shannon",
         version: 1,
         parameterSets: [
           {
@@ -110,6 +113,7 @@ class MainPanel extends React.Component {
       },
       {
         name: "B0001_call2:W1008_call1:M7777",
+        alias: "Darpa stage 1",
         version: 1,
         parameterSets: [
           {
@@ -471,7 +475,15 @@ class MainPanel extends React.Component {
             onChange={this.expandCollapse(item)}
           >
             <ExpansionPanelSummary>
-              <Typography variant="h6">{item.name}</Typography>
+              <Typography variant="subtitle1" className={classes.itemName}>
+                {item.name}
+              </Typography>
+              <Typography variant="subtitle1" className={classes.alias}>
+                {item.alias}
+              </Typography>
+              <Typography variant="subtitle1">{`(${
+                item.parameterSets.length
+              })`}</Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
               {item.parameterSets.map((paramSet, index) => (

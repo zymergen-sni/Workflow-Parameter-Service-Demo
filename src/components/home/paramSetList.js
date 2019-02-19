@@ -46,7 +46,12 @@ function ListItemLink(props) {
   return <ListItem button component="a" {...props} />;
 }
 
-const options = ["Clone", "Set as default", "Edit variable", "Associate with other"];
+const options = [
+  "Clone",
+  "Set as default",
+  "Edit variables",
+  "Associate with others"
+];
 
 const ITEM_HEIGHT = 48;
 
@@ -77,11 +82,10 @@ class ParamSetList extends React.Component {
         <CardContent className={classes.cardContent}>
           <List component="nav" className={classes.list}>
             {data.parameterSet.map((paramSet, index) => (
-              <ListItem button key={index}>
+              <ListItem button key={index} onClick={this.props.toggleDrawer}>
                 <ListItemText
                   primary={paramSet.paramSet}
                   secondary={paramSet.variable}
-                  onClick={this.props.toggleDrawer}
                 />
               </ListItem>
             ))}

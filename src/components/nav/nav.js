@@ -15,9 +15,17 @@ export const mainListItems = (
     <Link to="/">
       <ListItem button>
         <ListItemIcon>
-          <DashboardIcon />
+          <BubbleChartIcon />
         </ListItemIcon>
-        <ListItemText primary="Home" />
+        <ListItemText primary="Usage context sets" />
+      </ListItem>
+    </Link>
+    <Link to="/">
+      <ListItem button>
+        <ListItemIcon>
+          <AssignmentIcon />
+        </ListItemIcon>
+        <ListItemText primary="Parameter sets" />
       </ListItem>
     </Link>
     <Link to="/createParamSet">
