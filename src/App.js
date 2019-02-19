@@ -70,6 +70,10 @@ const styles = theme => ({
   title: {
     flexGrow: 1
   },
+  pageName: {
+    color: '#fbe183',
+    marginLeft: 30,
+  },
   drawerPaper: {
     position: "relative",
     whiteSpace: "nowrap",
@@ -111,7 +115,7 @@ const styles = theme => ({
 class Dashboard extends React.Component {
   state = {
     open: true,
-    title: "Usage Context Set"
+    pageName: "Usage Context Set"
   };
 
   handleDrawerOpen = () => {
@@ -141,11 +145,15 @@ class Dashboard extends React.Component {
         case "/paramSets":
           title = "Parameter Sets";
           break;
+        case "/paramSet":
+          title = "Parameter Set Details";
+          break;
+
         default:
           title = "Usage Context Set";
           break;
       }
-      this.setState({ title: title });
+      this.setState({ pageName: title });
     });
     return (
       <div className={classes.root}>
@@ -179,7 +187,15 @@ class Dashboard extends React.Component {
               noWrap
               className={classes.title}
             >
-              Workflow Parameter Service - {this.state.title}
+              Workflow Parameter Service
+            </Typography>
+            <Typography
+              component="h1"
+              variant="subtitle1"
+              noWrap
+              className={classes.pageName}
+            >
+              {this.state.pageName}
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
