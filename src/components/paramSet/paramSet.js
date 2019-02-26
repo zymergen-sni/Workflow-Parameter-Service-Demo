@@ -94,7 +94,7 @@ class ParamSet extends React.Component {
           <FileCopyIcon className={classes.rightIcon} />
         </Button>
         <Button variant="contained" className={classes.button}>
-          Set as default
+          Set as active
         </Button>
         <Button
           variant="contained"

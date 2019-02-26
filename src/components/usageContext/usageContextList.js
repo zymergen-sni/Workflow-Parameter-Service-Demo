@@ -1,23 +1,25 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
-import Paper from '@material-ui/core/Paper';
-import InputBase from '@material-ui/core/InputBase';
-import SearchIcon from '@material-ui/icons/Search';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import MenuItem from '@material-ui/core/MenuItem';
-import Collapse from '@material-ui/core/Collapse';
-import Select from '@material-ui/core/Select';
-import Filters from './filter';
-import MainPanel from './panel'
+import React from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import IconButton from "@material-ui/core/IconButton";
+import Paper from "@material-ui/core/Paper";
+import InputBase from "@material-ui/core/InputBase";
+import SearchIcon from "@material-ui/icons/Search";
+import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
+import MenuItem from "@material-ui/core/MenuItem";
+import Collapse from "@material-ui/core/Collapse";
+import Select from "@material-ui/core/Select";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Filters from "./filter";
+import MainPanel from "./panel";
 
 const styles = theme => ({
   root: {
-    padding: '2px 4px',
-    display: 'flex',
-    alignItems: 'center',
+    padding: "2px 4px",
+    display: "flex",
+    alignItems: "center",
     width: 400
   },
   input: {
@@ -36,18 +38,19 @@ const styles = theme => ({
     minWidth: 120
   },
   valueContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
+    display: "flex",
+    flexWrap: "wrap",
     flex: 1,
-    alignItems: 'center',
-    overflow: 'hidden'
+    alignItems: "center",
+    overflow: "hidden"
   }
 });
 
-class Home extends React.Component {
+class UsageContextList extends React.Component {
   state = {
     openFilter: false,
-    sortBy: 'default'
+    sortBy: "default",
+    defaultSpecificFilter: 'all',
   };
 
   changeSortBy = event => {
@@ -65,6 +68,13 @@ class Home extends React.Component {
   toggleFilters = () => {
     this.setState(state => ({ openFilter: !state.openFilter }));
   };
+
+  changeDefaultSpecificFilter = event => {
+    this.setState({
+      defaultSpecificFilter: event.target.value
+    });
+  }
+
   render() {
     const { classes, theme } = this.props;
     const { openFilter, processModelFilter } = this.state;
@@ -74,8 +84,8 @@ class Home extends React.Component {
         <Grid container spacing={24} className={classes.gridContainer}>
           <Grid item>
             <Paper className={classes.root} elevation={1}>
-              <InputBase className={classes.input} placeholder='Search' />
-              <IconButton className={classes.iconButton} aria-label='Search'>
+              <InputBase className={classes.input} placeholder="Search" />
+              <IconButton className={classes.iconButton} aria-label="Search">
                 <SearchIcon />
               </IconButton>
             </Paper>
@@ -84,23 +94,40 @@ class Home extends React.Component {
             <Select
               value={this.state.sortBy}
               onChange={this.changeSortBy}
-              name='Sort By'
+              name="Sort By"
               inputProps={{
-                name: 'sortBy',
-                id: 'sortBy-simple'
+                name: "sortBy",
+                id: "sortBy-simple"
               }}
             >
-              <MenuItem value={'default'}>
+              <MenuItem value={"default"}>
                 <em>Sort By: Default</em>
               </MenuItem>
-              <MenuItem value={'createDate'}>Sort By: Create Date</MenuItem>
-              <MenuItem value={'name'}>Sort By: Name</MenuItem>
-              <MenuItem value={'creator'}>Sort By: Creator</MenuItem>
+              <MenuItem value={"createDate"}>Sort By: Create Date</MenuItem>
+              <MenuItem value={"name"}>Sort By: Name</MenuItem>
+              <MenuItem value={"creator"}>Sort By: Creator</MenuItem>
+            </Select>
+          </Grid>
+          <Grid item>
+            <Select
+              value={this.state.defaultSpecificFilter}
+              onChange={this.changeDefaultSpecificFilter}
+              name="defaultSpecificFilter"
+              inputProps={{
+                name: "defaultSpecificFilter",
+                id: "defaultSpecificFilter"
+              }}
+            >
+              <MenuItem value={"all"}>
+                <em>All</em>
+              </MenuItem>
+              <MenuItem value={"default"}>Default</MenuItem>
+              <MenuItem value={"specific"}>Specific</MenuItem>
             </Select>
           </Grid>
           <Grid item>
             <Button
-              color='primary'
+              color="primary"
               className={classes.button}
               onClick={this.toggleFilters}
             >
@@ -143,8 +170,8 @@ class Home extends React.Component {
   }
 }
 
-Home.propTypes = {
+UsageContextList.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles, { withTheme: true })(Home);
+export default withStyles(styles, { withTheme: true })(UsageContextList);

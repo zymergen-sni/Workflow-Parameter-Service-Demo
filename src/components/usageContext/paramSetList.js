@@ -48,7 +48,7 @@ function ListItemLink(props) {
 
 const options = [
   "Clone",
-  "Set as default",
+  "Set as active",
   "Edit variables",
   "Associate with others"
 ];

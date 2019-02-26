@@ -15,7 +15,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { mainListItems, secondaryListItems } from "./components/nav/nav";
-import Home from "./components/home/home";
+import UsageContextList from "./components/usageContext/usageContextList";
 import Settings from "./components/settings/settings";
 import CreateParamSet from "./components/paramSet/createParamSet";
 import createUsageContext from "./components/usageContext/createUsageContext";
@@ -234,7 +234,7 @@ class Dashboard extends React.Component {
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
           <Typography variant="h4" gutterBottom component="h2">
-            <Route exact path="/" component={Home} />
+            <Route exact path="/" component={UsageContextList} />
             <Route path="/createParamSet" component={CreateParamSet} />
             <Route path="/createUsageContext" component={createUsageContext} />
             <Route path="/settings" component={Settings} />
