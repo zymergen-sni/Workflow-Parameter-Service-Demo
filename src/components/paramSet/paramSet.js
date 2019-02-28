@@ -130,7 +130,7 @@ class ParamSet extends React.Component {
           noWrap
         >
           Currently associate with:
-          <IconButton aria-label="Delete">
+          <IconButton aria-label="Add">
             <AddIcon />
           </IconButton>
         </Typography>

@@ -27,7 +27,8 @@ const drawerWidth = 240;
 
 const styles = theme => ({
   root: {
-    display: "flex"
+    display: "flex",
+    background: "#fff"
   },
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
@@ -75,6 +76,7 @@ const styles = theme => ({
     marginLeft: 30
   },
   drawerPaper: {
+    background: "#fafafa",
     position: "relative",
     whiteSpace: "nowrap",
     width: drawerWidth,

@@ -47,9 +47,9 @@ function ListItemLink(props) {
 }
 
 const options = [
-  "Clone",
-  "Set as active",
-  "Edit variables",
+  "Edit parameter set",
+  "Remove from context",
+  "Set current collection to active",
   "Associate with others"
 ];
 
@@ -62,6 +62,7 @@ class ParamSetList extends React.Component {
 
   handleClick = event => {
     this.setState({ anchorEl: event.currentTarget });
+    event.stopPropagation();
   };
 
   handleClose = () => {
@@ -87,44 +88,39 @@ class ParamSetList extends React.Component {
                   primary={paramSet.paramSet}
                   secondary={paramSet.variable}
                 />
+                <IconButton
+                  aria-label="More"
+                  aria-owns={open ? "long-menu" : undefined}
+                  aria-haspopup="true"
+                  onClick={this.handleClick}
+                >
+                  <MoreVertIcon />
+                </IconButton>
               </ListItem>
             ))}
           </List>
-          <Divider className={classes.divider} />
-          <div style={{ background: "#fff" }}>
-            <div className={classes.actionButton}>
-              <IconButton
-                aria-label="More"
-                aria-owns={open ? "long-menu" : undefined}
-                aria-haspopup="true"
-                onClick={this.handleClick}
+          <Menu
+            id="long-menu"
+            className={classes.menu}
+            anchorEl={anchorEl}
+            open={open}
+            onClose={this.handleClose}
+            PaperProps={{
+              style: {
+                maxHeight: ITEM_HEIGHT * 4.5,
+                width: 300
+              }
+            }}
+          >
+            {options.map(option => (
+              <MenuItem
+                key={option}
+                onClick={this.handleClose}
               >
-                <MoreVertIcon />
-              </IconButton>
-              <Menu
-                id="long-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={this.handleClose}
-                PaperProps={{
-                  style: {
-                    maxHeight: ITEM_HEIGHT * 4.5,
-                    width: 200
-                  }
-                }}
-              >
-                {options.map(option => (
-                  <MenuItem
-                    key={option}
-                    selected={option === "Pyxis"}
-                    onClick={this.handleClose}
-                  >
-                    {option}
-                  </MenuItem>
-                ))}
-              </Menu>
-            </div>
-          </div>
+                {option}
+              </MenuItem>
+            ))}
+          </Menu>
         </CardContent>
       </Card>
     );
