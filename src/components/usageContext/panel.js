@@ -10,6 +10,7 @@ import ParamSet from "../paramSet/paramSet";
 import ReactPaginate from "react-paginate";
 import AddIcon from "@material-ui/icons/Add";
 import Button from "@material-ui/core/Button";
+import Chip from "@material-ui/core/Chip";
 
 const styles = {
   paginate: {
@@ -28,7 +29,19 @@ const styles = {
     }
   },
   itemName: { marginRight: 10 },
-  alias: { color: "#1c1d09eb", marginRight: 10 }
+  expansionPanel: {
+    "& div": { display: "flex", justifyContent: "space-between" }
+  },
+  alias: { color: "#1c1d09eb", marginRight: 10 },
+  defaultForSpecific: { lineHeight: 1, borderRadius: 15, fontSize: 12 },
+  categoryMarker: {
+    position: "absolute",
+    width: 7,
+    left: 0,
+    top: 0,
+    bottom: 0,
+    backgroundColor: "#acd45d"
+  }
 };
 
 const ExpansionPanel = withStyles({
@@ -81,8 +94,8 @@ class MainPanel extends React.Component {
     usageContexts: [
       {
         name: "B0001:v1.0.2",
-        alias: "Tecan process_Shannon",
         version: 1,
+        isDefault: true,
         parameterSets: [
           {
             isDefault: true,
@@ -113,7 +126,6 @@ class MainPanel extends React.Component {
       },
       {
         name: "B0001_call2:W1008_call1:M7777",
-        alias: "Darpa stage 1",
         version: 1,
         parameterSets: [
           {
@@ -221,6 +233,38 @@ class MainPanel extends React.Component {
               {
                 variable: "poolSettings",
                 paramSet: "pooling_settings_004"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        name: "C0001:v1.0.1",
+        version: 1,
+        isDefault: true,
+        parameterSets: [
+          {
+            isDefault: true,
+            parameterSet: [
+              {
+                variable: "tecanParams",
+                paramSet: "tecan_echo_001"
+              },
+              {
+                variable: "poolSettings",
+                paramSet: "pooling_settings_002"
+              }
+            ]
+          },
+          {
+            parameterSet: [
+              {
+                variable: "tecanParams",
+                paramSet: "tecan_echo_002"
+              },
+              {
+                variable: "poolSettings",
+                paramSet: "pooling_settings_003"
               }
             ]
           }
@@ -474,16 +518,35 @@ class MainPanel extends React.Component {
             expanded={item.expanded === true}
             onChange={this.expandCollapse(item)}
           >
-            <ExpansionPanelSummary>
-              <Typography variant="subtitle1" className={classes.itemName}>
-                {item.name}
-              </Typography>
-              <Typography variant="subtitle1" className={classes.alias}>
-                {item.alias}
-              </Typography>
-              <Typography variant="subtitle1">{`(${
-                item.parameterSets.length
-              })`}</Typography>
+            <ExpansionPanelSummary className={classes.expansionPanel}>
+              <div
+                className={classes.categoryMarker}
+                style={{ background: item.isDefault ? "#acd45d" : "#b67ed2" }}
+              />
+              <div>
+                <Typography variant="subtitle1" className={classes.itemName}>
+                  {item.name}
+                </Typography>
+                <Typography variant="subtitle1" className={classes.alias}>
+                  {item.alias}
+                </Typography>
+                <Typography variant="subtitle1">{`(${
+                  item.parameterSets.length
+                })`}</Typography>
+              </div>
+              {!item.isDefault ? (
+                <div>
+                  <Button
+                    variant="outlined"
+                    color="inherit"
+                    className={classes.defaultForSpecific}
+                  >
+                    Default: B0001:V1.0.2
+                  </Button>
+                </div>
+              ) : (
+                ""
+              )}
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
               {item.parameterSets.map((paramSet, index) => (
