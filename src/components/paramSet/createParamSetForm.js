@@ -214,7 +214,7 @@ class CreateParamSetForm extends React.Component {
           {steps.map((label, index) => (
             <Step key={label}>
               <StepLabel>
-                {!isLast && index === 0 ? (
+                {data.label && index === 0 && activeStep !== 0 ? (
                   <div>
                     <Typography
                       variant="subtitle1"
