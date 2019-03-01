@@ -41,7 +41,7 @@ export const mainListItems = (
         <ListItemIcon>
           <AddIcon />
         </ListItemIcon>
-        <ListItemText primary="Create Context Usage" />
+        <ListItemText primary="Create Usage Context" />
       </ListItem>
     </Link>
     <Link to="/settings">
