@@ -109,19 +109,23 @@ class CreateParamSet extends React.Component {
   };
 
   addNewRow = dataSet => {
-    let definition = [...this.state.definition, { key: "", value: "" }];
+    let definition = this.state.itemsToBeCreated[0].definition.slice();
+    definition = [...definition, { key: "", value: "" }];
+    this.state.itemsToBeCreated[0].definition = definition
     this.setState(() => ({
-      definition
+      itemsToBeCreated: this.state.itemsToBeCreated
     }));
   };
 
   deleteRow = index => () => {
-    let definition = this.state.definition.slice();
+    let definition = this.state.itemsToBeCreated[0].definition.slice();
     definition.splice(index, 1);
+    this.state.itemsToBeCreated[0].definition = definition;
     this.setState(() => ({
-      definition
+      itemsToBeCreated: this.state.itemsToBeCreated
     }));
   };
+  
   getSteps = () => {
     return ["Enter Param Set Name", "Add parameters", "Add associations"];
   };
@@ -246,7 +250,7 @@ class CreateParamSet extends React.Component {
   };
 
   onReactJsonClick = event => {
-    if (!this.state.editMode && event.target.nodeName !== "SPAN") {
+    if (!this.state.editMode && event.target.className !== "object-key") {
       this.setState(() => ({
         editMode: true,
         textEditorData: JSON.stringify(this.cleanItemsToBeCreated(), null, "  ")
