@@ -30,7 +30,10 @@ const styles = {
   },
   itemName: { marginRight: 10 },
   expansionPanel: {
-    "& div": { display: "flex", justifyContent: "space-between" }
+    "& div": { display: "flex", justifyContent: "space-between" },
+    "&[aria-expanded=true]": {
+      background: "#c4ddec"
+    }
   },
   alias: { color: "#1c1d09eb", marginRight: 10 },
   defaultForSpecific: { lineHeight: 1, borderRadius: 15, fontSize: 12 },
@@ -56,13 +59,14 @@ const ExpansionPanel = withStyles({
     }
   },
   expanded: {
-    margin: "auto"
+    margin: "auto",
+    outline: "1px solid #169cff",
+    marginBottom: 1
   }
 })(MuiExpansionPanel);
 
 const ExpansionPanelSummary = withStyles({
   root: {
-    backgroundColor: "#9bb5cc38",
     borderBottom: "1px solid rgba(0,0,0,.125)",
     marginBottom: -1,
     "&$expanded": {
@@ -84,7 +88,8 @@ ExpansionPanelSummary.muiName = "ExpansionPanelSummary";
 const ExpansionPanelDetails = withStyles(theme => ({
   root: {
     display: "block",
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing.unit * 2,
+    background: "#f2faff"
   }
 }))(MuiExpansionPanelDetails);
 
