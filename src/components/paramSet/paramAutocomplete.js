@@ -135,6 +135,7 @@ class IntegrationAutosuggest extends React.Component {
     this.setState({
       [name]: newValue,
     });
+    this.props.updateParentState(newValue, this.props.index);
   };
 
   render() {

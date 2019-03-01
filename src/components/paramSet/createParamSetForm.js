@@ -12,6 +12,7 @@ import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
+import ParamAutocomplete from './paramAutocomplete.js';
 
 const styles = theme => ({
   actionButton: { marginRight: 20 },
@@ -83,6 +84,11 @@ class CreateParamSetForm extends React.Component {
     this.props.updateItemsToBeCreated(this.props.index, this.props.data);
   };
 
+  updateParentState = (val, index) => {
+    this.props.data.definition[index].key = val;
+    this.props.updateItemsToBeCreated(this.props.index, this.props.data);
+  }
+
   getStepContent = (step, classes, paramSetName, definition, usages, self) => {
     switch (step) {
       case 0:
@@ -100,13 +106,14 @@ class CreateParamSetForm extends React.Component {
           <form className={classes.container} noValidate autoComplete="off">
             {definition.map((param, index) => (
               <div key={index}>
-                <TextField
+                {/* <TextField
                   label="Key"
                   className={classes.textField}
                   value={param.key}
                   onChange={this.onDefinitionChange(index, "key")}
                   margin="normal"
-                />
+                /> */}
+                <ParamAutocomplete updateParentState={this.updateParentState} index={index}></ParamAutocomplete>
                 <TextField
                   label="Value"
                   className={classes.textField}
