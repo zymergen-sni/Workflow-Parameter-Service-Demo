@@ -35,21 +35,17 @@ const styles = theme => ({
 });
 
 class CreateParamSet extends React.Component {
-  initializeData = () => {
-    if (!this.state) {
-      this.state = {
-        activeStep: 0,
-        editMode: false,
-        textEditorData: "",
-        itemsToBeCreated: [
-          {
-            label: "",
-            definition: [{ key: "", value: "" }],
-            usages: [""]
-          }
-        ]
-      };
-    }
+  state = {
+    activeStep: 0,
+    editMode: false,
+    textEditorData: "",
+    itemsToBeCreated: [
+      {
+        label: "",
+        definition: [{ key: "", value: "" }],
+        usages: [""]
+      }
+    ]
   };
 
   resetItemsToBeCreated = () => {
@@ -121,7 +117,6 @@ class CreateParamSet extends React.Component {
 
   render() {
     const { classes, data } = this.props;
-    this.initializeData();
     const {
       itemsToBeCreated,
       activeStep,
