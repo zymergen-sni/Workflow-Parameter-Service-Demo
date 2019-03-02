@@ -1,0 +1,34 @@
+{
+    "extends": ["airbnb", "prettier"],
+    "plugins": ["import", "prettier"],
+    "env": {
+      "browser": true,
+      "node": true,
+      "commonjs": true,
+      "es6": true,
+      "jasmine": true,
+      "protractor": true
+    },
+    "rules": {
+      "space-before-function-paren": "off",
+      "strict": "off",
+      "import/extensions": "off",
+      "class-methods-use-this": "off",
+      "padded-blocks": "off",
+      "no-underscore-dangle": "off",
+      "prefer-arrow-callback": "off",
+      "brace-style": "off",
+      "no-plusplus": "off",
+      "no-param-reassign": "off",
+      "object-shorthand": "off",
+      "newline-per-chained-call": "off",
+      "no-continue": "off",
+      "func-names": "off",
+      "no-await-in-loop": "off",
+      "no-empty": "off",
+      "prefer-promise-reject-errors": "warn",
+      "no-console": "off",
+      "prettier/prettier": ["error"]
+    }
+  }
+  

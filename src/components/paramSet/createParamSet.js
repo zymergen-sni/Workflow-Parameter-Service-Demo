@@ -1,79 +1,79 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import ReactJson from "react-json-view";
-import Button from "@material-ui/core/Button";
-import CreateParamSetForm from "./createParamSetForm";
-import Divider from "@material-ui/core/Divider";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import ReactJson from 'react-json-view';
+import Button from '@material-ui/core/Button';
+import CreateParamSetForm from './createParamSetForm';
+import Divider from '@material-ui/core/Divider';
 
-const styles = theme => ({
+const styles = (theme) => ({
   jsonView: {
-    fontSize: 12
+    fontSize: 12,
   },
-  majorButton: { float: "right", margin: 20 },
+  majorButton: { float: 'right', margin: 20 },
   title1Div: {
-    width: "100%",
-    display: "inline-block"
+    width: '100%',
+    display: 'inline-block',
   },
   title1: {
-    float: "left",
-    fontWeight: "bold"
+    float: 'left',
+    fontWeight: 'bold',
   },
   title2: {
-    fontWeight: "bold"
+    fontWeight: 'bold',
   },
   or: {
-    float: "left",
-    marginLeft: 100
+    float: 'left',
+    marginLeft: 100,
   },
-  formsDiv: { display: "inline-block" },
+  formsDiv: { display: 'inline-block' },
   divider1: { width: 290 },
-  divider2: { marginBottom: 30, marginTop: 10 }
+  divider2: { marginBottom: 30, marginTop: 10 },
 });
 
 class CreateParamSet extends React.Component {
   state = {
     activeStep: 0,
     editMode: false,
-    textEditorData: "",
+    textEditorData: '',
     itemsToBeCreated: [
       {
-        label: "",
-        definition: [{ key: "", value: "" }],
-        usages: [""]
-      }
-    ]
+        label: '',
+        definition: [{ key: '', value: '' }],
+        usages: [''],
+      },
+    ],
   };
 
   resetItemsToBeCreated = () => {
     const defaultData = [
       {
-        label: "",
-        definition: [{ key: "", value: "" }],
-        usages: [""]
-      }
+        label: '',
+        definition: [{ key: '', value: '' }],
+        usages: [''],
+      },
     ];
     this.setState(() => ({
       editMode: false,
-      itemsToBeCreated: defaultData
+      itemsToBeCreated: defaultData,
     }));
   };
 
-  onEditorChange = event => {
+  onEditorChange = (event) => {
     let newData = event.target.value;
     this.setState(() => ({
-      textEditorData: newData
+      textEditorData: newData,
     }));
   };
 
-  onReactJsonClick = event => {
-    if (!this.state.editMode && event.target.className !== "object-key") {
+  onReactJsonClick = (event) => {
+    if (!this.state.editMode && event.target.className !== 'object-key') {
       this.setState(() => ({
         editMode: true,
-        textEditorData: JSON.stringify(this.cleanItemsToBeCreated(), null, "  ")
+        textEditorData: JSON.stringify(this.cleanItemsToBeCreated(), null, '  '),
       }));
     }
   };
@@ -81,24 +81,26 @@ class CreateParamSet extends React.Component {
   saveTextEditorData = () => {
     this.setState(() => ({
       editMode: false,
-      itemsToBeCreated: JSON.parse(this.state.textEditorData)
+      itemsToBeCreated: JSON.parse(this.state.textEditorData),
     }));
   };
 
   cleanItemsToBeCreated = () => {
-    return this.state.itemsToBeCreated.map(item => ({
+    return this.state.itemsToBeCreated.map((item) => ({
       ...item,
-      usages: item.usages.filter(usage => usage.trim() !== ""),
-      definition: item.definition.filter(
-        def => def.key.trim() !== "" && def.value.trim() !== ""
-      )
+      usages: item.usages.filter((usage) => usage.trim() !== ''),
+      definition: item.definition.filter((def) => def.key.trim() !== '' && def.value.trim() !== ''),
     }));
   };
 
   updateItemsToBeCreated = (index, data) => {
-    this.state.itemsToBeCreated[index] = data;
+    if (!data) {
+      this.state.itemsToBeCreated.splice(0, 1);
+    } else {
+      this.state.itemsToBeCreated[index] = data;
+    }
     this.setState(() => ({
-      itemsToBeCreated: this.state.itemsToBeCreated
+      itemsToBeCreated: this.state.itemsToBeCreated,
     }));
   };
 
@@ -107,22 +109,17 @@ class CreateParamSet extends React.Component {
       itemsToBeCreated: [
         ...this.state.itemsToBeCreated,
         {
-          label: "",
-          definition: [{ key: "", value: "" }],
-          usages: [""]
-        }
-      ]
+          label: '',
+          definition: [{ key: '', value: '' }],
+          usages: [''],
+        },
+      ],
     }));
   };
 
   render() {
     const { classes, data } = this.props;
-    const {
-      itemsToBeCreated,
-      activeStep,
-      editMode,
-      textEditorData
-    } = this.state;
+    const { itemsToBeCreated, activeStep, editMode, textEditorData } = this.state;
 
     return (
       <Grid container spacing={24}>
@@ -144,6 +141,7 @@ class CreateParamSet extends React.Component {
                 data={item}
                 isLast={index === itemsToBeCreated.length - 1}
                 addNewParamSet={this.addNewParamSet}
+                itemsToBeCreated={this.state.itemsToBeCreated}
                 updateItemsToBeCreated={this.updateItemsToBeCreated}
               />
             ))}
@@ -167,7 +165,7 @@ class CreateParamSet extends React.Component {
               variant="filled"
               value={textEditorData}
               InputLabelProps={{
-                shrink: true
+                shrink: true,
               }}
             />
           ) : (
@@ -198,15 +196,12 @@ class CreateParamSet extends React.Component {
               >
                 Save
               </Button>
-              <Button
-                onClick={this.resetItemsToBeCreated}
-                className={classes.majorButton}
-              >
+              <Button onClick={this.resetItemsToBeCreated} className={classes.majorButton}>
                 Reset
               </Button>
             </div>
           ) : (
-            ""
+            ''
           )}
         </Grid>
       </Grid>
@@ -215,7 +210,7 @@ class CreateParamSet extends React.Component {
 }
 
 CreateParamSet.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(CreateParamSet);

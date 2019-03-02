@@ -1,123 +1,123 @@
-import React from "react";
-import PropTypes from "prop-types";
-import classNames from "classnames";
-import { withStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Drawer from "@material-ui/core/Drawer";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
-import Badge from "@material-ui/core/Badge";
-import MenuIcon from "@material-ui/icons/Menu";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import { mainListItems, secondaryListItems } from "./components/nav/nav";
-import UsageContextList from "./components/usageContext/usageContextList";
-import Settings from "./components/settings/settings";
-import CreateParamSet from "./components/paramSet/createParamSet";
-import createUsageContext from "./components/usageContext/createUsageContext";
-import { Route, withRouter } from "react-router-dom";
-import BackgroundImg from "./assets/header.jpg";
-import paramSet from "./components/paramSet/paramSet";
+import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import { withStyles } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Drawer from '@material-ui/core/Drawer';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import List from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
+import Badge from '@material-ui/core/Badge';
+import MenuIcon from '@material-ui/icons/Menu';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import { mainListItems, secondaryListItems } from './components/nav/nav';
+import UsageContextList from './components/usageContext/usageContextList';
+import Settings from './components/settings/settings';
+import CreateParamSet from './components/paramSet/createParamSet';
+import createUsageContext from './components/usageContext/createUsageContext';
+import { Route, withRouter } from 'react-router-dom';
+import BackgroundImg from './assets/header.jpg';
+import paramSet from './components/paramSet/paramSet';
 
 const drawerWidth = 240;
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
-    display: "flex",
-    background: "#fff"
+    display: 'flex',
+    background: '#fff',
   },
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
-    background: "#0000008f"
+    background: '#0000008f',
   },
   toolbarIcon: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    padding: "0 8px",
-    ...theme.mixins.toolbar
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: '0 8px',
+    ...theme.mixins.toolbar,
   },
   appBar: {
-    background: "#0f3052",
+    background: '#0f3052',
     backgroundImage: `url(${BackgroundImg})`,
-    backgroundSize: "800px 280px",
-    backgroundPosition: "right",
-    backgroundRepeat: "no-repeat",
+    backgroundSize: '800px 280px',
+    backgroundPosition: 'right',
+    backgroundRepeat: 'no-repeat',
     zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(["width", "margin"], {
+    transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    })
+      duration: theme.transitions.duration.leavingScreen,
+    }),
   },
   appBarShift: {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
+    transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   menuButton: {
     marginLeft: 12,
-    marginRight: 36
+    marginRight: 36,
   },
   menuButtonHidden: {
-    display: "none"
+    display: 'none',
   },
   title: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   pageName: {
-    color: "#fbe183",
-    marginLeft: 30
+    color: '#fbe183',
+    marginLeft: 30,
   },
   drawerPaper: {
-    background: "#fafafa",
-    position: "relative",
-    whiteSpace: "nowrap",
+    background: '#fafafa',
+    position: 'relative',
+    whiteSpace: 'nowrap',
     width: drawerWidth,
-    transition: theme.transitions.create("width", {
+    transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   drawerPaperClose: {
-    overflowX: "hidden",
-    transition: theme.transitions.create("width", {
+    overflowX: 'hidden',
+    transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
+      duration: theme.transitions.duration.leavingScreen,
     }),
     width: theme.spacing.unit * 7,
-    [theme.breakpoints.up("sm")]: {
-      width: theme.spacing.unit * 9
-    }
+    [theme.breakpoints.up('sm')]: {
+      width: theme.spacing.unit * 9,
+    },
   },
   appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
     padding: theme.spacing.unit * 3,
-    height: "100vh",
-    overflow: "auto"
+    height: '100vh',
+    overflow: 'auto',
   },
   chartContainer: {
-    marginLeft: -22
+    marginLeft: -22,
   },
   tableContainer: {
-    height: 320
+    height: 320,
   },
   h5: {
-    marginBottom: theme.spacing.unit * 2
-  }
+    marginBottom: theme.spacing.unit * 2,
+  },
 });
 
 class Dashboard extends React.Component {
   state = {
     open: true,
-    pageName: "Usage Context Set"
+    pageName: 'Usage Context Set',
   };
 
   handleDrawerOpen = () => {
@@ -128,27 +128,27 @@ class Dashboard extends React.Component {
     this.setState({ open: false });
   };
 
-  updatePathName = pathName => {
-    let title = "";
+  updatePathName = (pathName) => {
+    let title = '';
     switch (pathName) {
-      case "/createUsageContext":
-        title = "Create Usage Context";
+      case '/createUsageContext':
+        title = 'Create Usage Context';
         break;
-      case "/createParamSet":
-        title = "Create Parameter Set";
+      case '/createParamSet':
+        title = 'Create Parameter Set';
         break;
-      case "/settings":
-        title = "Settings";
+      case '/settings':
+        title = 'Settings';
         break;
-      case "/paramSets":
-        title = "Parameter Sets";
+      case '/paramSets':
+        title = 'Parameter Sets';
         break;
-      case "/paramSet":
-        title = "Parameter Set Details";
+      case '/paramSet':
+        title = 'Parameter Set Details';
         break;
 
       default:
-        title = "Usage Context Set";
+        title = 'Usage Context Set';
         break;
     }
     if (this.state.pageName !== title) {
@@ -169,22 +169,16 @@ class Dashboard extends React.Component {
         <CssBaseline />
         <AppBar
           position="absolute"
-          className={classNames(
-            classes.appBar,
-            this.state.open && classes.appBarShift
-          )}
+          className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
         >
-          <Toolbar
-            disableGutters={!this.state.open}
-            className={classes.toolbar}
-          >
+          <Toolbar disableGutters={!this.state.open} className={classes.toolbar}>
             <IconButton
               color="inherit"
               aria-label="Open drawer"
               onClick={this.handleDrawerOpen}
               className={classNames(
                 classes.menuButton,
-                this.state.open && classes.menuButtonHidden
+                this.state.open && classes.menuButtonHidden,
               )}
             >
               <MenuIcon />
@@ -198,12 +192,7 @@ class Dashboard extends React.Component {
             >
               Workflow Parameter Service
             </Typography>
-            <Typography
-              component="h1"
-              variant="subtitle1"
-              noWrap
-              className={classes.pageName}
-            >
+            <Typography component="h1" variant="subtitle1" noWrap className={classes.pageName}>
               {this.state.pageName}
             </Typography>
             <IconButton color="inherit">
@@ -216,10 +205,7 @@ class Dashboard extends React.Component {
         <Drawer
           variant="permanent"
           classes={{
-            paper: classNames(
-              classes.drawerPaper,
-              !this.state.open && classes.drawerPaperClose
-            )
+            paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
           }}
           open={this.state.open}
         >
@@ -249,7 +235,7 @@ class Dashboard extends React.Component {
 }
 
 Dashboard.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
 export default withRouter(withStyles(styles)(Dashboard));

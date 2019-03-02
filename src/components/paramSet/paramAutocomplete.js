@@ -88,6 +88,7 @@ const styles = theme => ({
   root: {
     margin: '10px',
     flexGrow: 1,
+    display: "inline-flex",
   },
   container: {
     position: 'relative',

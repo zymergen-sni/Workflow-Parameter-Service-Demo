@@ -1,93 +1,103 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Stepper from "@material-ui/core/Stepper";
-import Step from "@material-ui/core/Step";
-import StepLabel from "@material-ui/core/StepLabel";
-import StepContent from "@material-ui/core/StepContent";
-import Paper from "@material-ui/core/Paper";
-import IconButton from "@material-ui/core/IconButton";
-import AddIcon from "@material-ui/icons/Add";
-import DeleteIcon from "@material-ui/icons/Delete";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import StepContent from '@material-ui/core/StepContent';
+import Paper from '@material-ui/core/Paper';
+import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
 import ParamAutocomplete from './paramAutocomplete.js';
 
-const styles = theme => ({
+const styles = (theme) => ({
   actionButton: { marginRight: 20 },
-  textField: { margin: 10 },
+  textField: { margin: 10, flexGrow: 1 },
   addDeleteButton: { marginTop: 14 },
   paramSetNameLabel: {
-    color: "#ca6b23",
-    float: "left",
+    color: '#ca6b23',
+    float: 'left',
     marginLeft: 10,
-    fontStyle: "italic"
+    fontStyle: 'italic',
   },
   stepLabel: {
-    float: "left"
-  }
+    float: 'left',
+  },
+  deleteSetIcon: {
+    color: '#999',
+    cursor: 'pointer',
+    marginLeft: 10,
+    '&:hover': { color: '#777' },
+  },
 });
 
 class CreateParamSetForm extends React.Component {
   state = { activeStep: 0 };
 
   getSteps = () => {
-    return ["Enter Param Set Name", "Add parameters", "Add usages"];
+    return ['Enter Param Set Name', 'Add parameters', 'Add usages'];
   };
 
-  changeParamSetName = () => event => {
+  changeParamSetName = () => (event) => {
     const paramSetName = event.target.value;
     this.props.data.label = paramSetName;
     this.props.updateItemsToBeCreated(this.props.index, this.props.data);
   };
 
-  onDefinitionChange = (index, name) => event => {
+  onDefinitionChange = (index, name) => (event) => {
     let definition = this.props.data.definition.slice();
     definition[index][name] = event.target.value;
     if (index === definition.length - 1) {
-      definition = [...definition, { key: "", value: "" }];
+      definition = [...definition, { key: '', value: '' }];
     }
     this.props.data.definition = definition;
     this.props.updateItemsToBeCreated(this.props.index, this.props.data);
   };
 
-  onUsageContextChange = index => event => {
+  onUsageContextChange = (index) => (event) => {
     let usages = this.props.data.usages.slice();
     usages[index] = event.target.value;
     if (index === usages.length - 1) {
-      usages = [...usages, ""];
+      usages = [...usages, ''];
     }
     this.props.data.usages = usages;
     this.props.updateItemsToBeCreated(this.props.index, this.props.data);
   };
 
-  addNewRow = dataSet => {
+  addNewRow = (dataSet) => {
     let definition = this.props.data.definition.slice();
-    definition = [...definition, { key: "", value: "" }];
+    definition = [...definition, { key: '', value: '' }];
     this.props.data.definition = definition;
     this.props.updateItemsToBeCreated(this.props.index, this.props.data);
   };
 
-  deleteRow = index => () => {
+  deleteRow = (index) => () => {
     let definition = this.props.data.definition.slice();
     definition.splice(index, 1);
     this.props.data.definition = definition;
     this.props.updateItemsToBeCreated(this.props.index, this.props.data);
   };
 
+  removeCurrentItem = () => {
+    this.props.updateItemsToBeCreated(this.props.index, null);
+  };
+
   reset = () => {
     this.changeActiveStep(0)();
-    this.props.data.label = "";
-    this.props.data.definition = [{ key: "", value: "" }];
-    this.props.data.usages = [""];
+    this.props.data.label = '';
+    this.props.data.definition = [{ key: '', value: '' }];
+    this.props.data.usages = [''];
     this.props.updateItemsToBeCreated(this.props.index, this.props.data);
   };
 
   updateParentState = (val, index) => {
     this.props.data.definition[index].key = val;
     this.props.updateItemsToBeCreated(this.props.index, this.props.data);
-  }
+  };
 
   getStepContent = (step, classes, paramSetName, definition, usages, self) => {
     switch (step) {
@@ -113,13 +123,13 @@ class CreateParamSetForm extends React.Component {
                   onChange={this.onDefinitionChange(index, "key")}
                   margin="normal"
                 /> */}
-                <ParamAutocomplete updateParentState={this.updateParentState} index={index}></ParamAutocomplete>
+                <ParamAutocomplete updateParentState={this.updateParentState} index={index} />
                 <TextField
                   label="Value"
                   className={classes.textField}
                   value={param.value}
                   margin="normal"
-                  onChange={this.onDefinitionChange(index, "value")}
+                  onChange={this.onDefinitionChange(index, 'value')}
                 />
                 {index === definition.length - 1 ? (
                   <IconButton
@@ -130,7 +140,7 @@ class CreateParamSetForm extends React.Component {
                     <AddIcon />
                   </IconButton>
                 ) : (
-                  ""
+                  ''
                 )}
                 {definition.length > 1 ? (
                   <IconButton
@@ -141,7 +151,7 @@ class CreateParamSetForm extends React.Component {
                     <DeleteIcon />
                   </IconButton>
                 ) : (
-                  ""
+                  ''
                 )}
               </div>
             ))}
@@ -169,7 +179,7 @@ class CreateParamSetForm extends React.Component {
                     <AddIcon />
                   </IconButton>
                 ) : (
-                  ""
+                  ''
                 )}
                 {usages.length > 1 ? (
                   <IconButton
@@ -180,37 +190,46 @@ class CreateParamSetForm extends React.Component {
                     <DeleteIcon />
                   </IconButton>
                 ) : (
-                  ""
+                  ''
                 )}
               </div>
             ))}
           </form>
         );
       default:
-        return "Unknown step";
+        return 'Unknown step';
     }
   };
 
   handleNext = () => {
-    this.setState(prevState => ({
-      activeStep: prevState.activeStep + 1
+    this.setState((prevState) => ({
+      activeStep: prevState.activeStep + 1,
     }));
   };
 
   handleBack = () => {
-    this.setState(prevState => ({
-      activeStep: prevState.activeStep - 1
+    this.setState((prevState) => ({
+      activeStep: prevState.activeStep - 1,
     }));
   };
 
-  changeActiveStep = index => () => {
+  changeActiveStep = (index) => () => {
+    if (index === this.state.activeStep) {
+      index = this.getSteps().length;
+    }
     this.setState(() => ({
-      activeStep: index
+      activeStep: index,
     }));
   };
 
   render() {
     const { classes, data, isLast } = this.props;
+    if (!data.definition || data.definition.length === 0) {
+      data.definition = [{ key: '', value: '' }];
+    }
+    if (!data.usages || data.usages.length === 0) {
+      data.usages = [''];
+    }
     const { definition, usages } = data;
     const { activeStep } = this.state;
     const paramSetName = data.label;
@@ -237,29 +256,25 @@ class CreateParamSetForm extends React.Component {
                     >
                       {data.label}
                     </Typography>
+                    {this.props.itemsToBeCreated.length > 1 && (
+                      <DeleteIcon
+                        className={classes.deleteSetIcon}
+                        onClick={this.removeCurrentItem}
+                      />
+                    )}
                   </div>
                 ) : (
-                  <Typography
-                    variant="subtitle1"
-                    onClick={this.changeActiveStep(index)}
-                  >
+                  <Typography variant="subtitle1" onClick={this.changeActiveStep(index)}>
                     {label}
                   </Typography>
                 )}
               </StepLabel>
               <StepContent>
-                {this.getStepContent(
-                  index,
-                  classes,
-                  paramSetName,
-                  definition,
-                  usages,
-                  this
-                )}
+                {this.getStepContent(index, classes, paramSetName, definition, usages, this)}
                 <div className={classes.actionsContainer}>
                   <div>
                     {index === 0 ? (
-                      ""
+                      ''
                     ) : (
                       <Button
                         disabled={activeStep === 0}
@@ -284,7 +299,7 @@ class CreateParamSetForm extends React.Component {
             </Step>
           ))}
         </Stepper>
-        {activeStep === steps.length && isLast && (
+        {isLast && (
           <Paper square elevation={0} className={classes.resetContainer}>
             <Button onClick={this.reset} className={classes.actionButton}>
               Reset
@@ -306,7 +321,7 @@ class CreateParamSetForm extends React.Component {
 }
 
 CreateParamSetForm.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles, { withTheme: true })(CreateParamSetForm);
