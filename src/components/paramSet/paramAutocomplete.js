@@ -140,7 +140,8 @@ class IntegrationAutosuggest extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, value } = this.props;
+    this.state.single = value;
 
     const autosuggestProps = {
       renderInputComponent,

@@ -123,7 +123,11 @@ class CreateParamSetForm extends React.Component {
                   onChange={this.onDefinitionChange(index, "key")}
                   margin="normal"
                 /> */}
-                <ParamAutocomplete updateParentState={this.updateParentState} index={index} />
+                <ParamAutocomplete
+                  updateParentState={this.updateParentState}
+                  index={index}
+                  value={param.key}
+                />
                 <TextField
                   label="Value"
                   className={classes.textField}
@@ -228,7 +232,7 @@ class CreateParamSetForm extends React.Component {
       data.definition = [{ key: '', value: '' }];
     }
     if (!data.usages || data.usages.length === 0) {
-      data.usages = [''];
+      data.usages = ['']; 
     }
     const { definition, usages } = data;
     const { activeStep } = this.state;

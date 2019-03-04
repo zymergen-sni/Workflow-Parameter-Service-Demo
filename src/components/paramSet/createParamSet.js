@@ -79,10 +79,41 @@ class CreateParamSet extends React.Component {
   };
 
   saveTextEditorData = () => {
-    this.setState(() => ({
-      editMode: false,
-      itemsToBeCreated: JSON.parse(this.state.textEditorData),
-    }));
+    let parsedData;
+    try {
+      parsedData = JSON.parse(this.state.textEditorData);
+      parsedData.forEach((item) => {
+        if (!item.label) {
+          item.label = '';
+        }
+        if (!item.definition) {
+          item.definition = [];
+        }
+        if (!item.usages) {
+          item.usages = [];
+        }
+        return item;
+      });
+      if (
+        !parsedData.every(
+          (item) =>
+            typeof item.label === 'string' &&
+            typeof item.definition === 'object' &&
+            typeof item.usages === 'object' &&
+            (item.usages.length === 0 || item.usages.every((usage) => typeof usage === 'string')) &&
+            (item.definition.length > 0 ||
+              item.definition.every((usage) => typeof definition === 'object')),
+        )
+      ) {
+        throw new Error();
+      }
+      this.setState(() => ({
+        editMode: false,
+        itemsToBeCreated: parsedData,
+      }));
+    } catch (error) {
+      alert(`Invalid JSON:${error}`);
+    }
   };
 
   cleanItemsToBeCreated = () => {
