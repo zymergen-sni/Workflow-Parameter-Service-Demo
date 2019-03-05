@@ -1,183 +1,265 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import IconButton from "@material-ui/core/IconButton";
-import AddIcon from "@material-ui/icons/Add";
-import DeleteIcon from "@material-ui/icons/Delete";
-import Divider from "@material-ui/core/Divider";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import ReactJson from 'react-json-view';
+import Button from '@material-ui/core/Button';
+import CreateParamSetForm from './createUsageContextForm';
+import Divider from '@material-ui/core/Divider';
 
-const styles = theme => ({
-  stepper: {
-    "& button": {
-      marginRight: 20
-    }
+const styles = (theme) => ({
+  jsonView: {
+    fontSize: 12,
   },
-  textField: { margin: 10 },
-  addDeleteButton: { marginTop: 14 },
-  divider: {
-    marginTop: 20,
-    marginBottom: 30
+  majorButton: { float: 'right', margin: 20 },
+  title1Div: {
+    width: '100%',
+    display: 'inline-block',
   },
-  paper: {
-    padding: 20,
-    minHeight: 800
-  }
+  title1: {
+    float: 'left',
+    fontWeight: 'bold',
+  },
+  title2: {
+    fontWeight: 'bold',
+  },
+  or: {
+    float: 'left',
+    marginLeft: 100,
+  },
+  formsDiv: { display: 'inline-block' },
+  divider1: { width: 290 },
+  divider2: { marginBottom: 30, marginTop: 10 },
 });
 
-class CreateUsageContext extends React.Component {
-  initializeData = () => {
-    if (!this.state) {
-      this.state = {
-        usageContextName: "",
-        usageContext: [{ key: "", value: "" }],
-        activeStep: 0,
-        bulkCreateJson: `
-        [{
-          specifier:"",
-          parameterSets:[""]
-        }]
-        `
-      };
+class CreateParamSet extends React.Component {
+  state = {
+    activeStep: 0,
+    editMode: false,
+    textEditorData: '',
+    itemsToBeCreated: [
+      {
+        specifier: '',
+        parameterSets: [{ key: '', value: '' }],
+      },
+    ],
+  };
+
+  resetItemsToBeCreated = () => {
+    const defaultData = [
+      {
+        specifier: '',
+        parameterSets: [{ key: '', value: '' }],
+      },
+    ];
+    this.setState(() => ({
+      editMode: false,
+      itemsToBeCreated: defaultData,
+    }));
+  };
+
+  onEditorChange = (event) => {
+    let newData = event.target.value;
+    this.setState(() => ({
+      textEditorData: newData,
+    }));
+  };
+
+  onReactJsonClick = (event) => {
+    if (
+      !this.state.editMode &&
+      (event.target.firstChild && event.target.firstChild.nodeType != Node.TEXT_NODE) &&
+      event.target.className !== 'object-key'
+    ) {
+      this.setState(() => ({
+        editMode: true,
+        textEditorData: JSON.stringify(this.cleanItemsToBeCreated(), null, '  '),
+      }));
     }
   };
 
-  changeUsageContextName = () => event => {
-    const usageContextName = event.target.value;
-    this.setState(() => ({
-      usageContextName
+  saveTextEditorData = () => {
+    let parsedData;
+    try {
+      parsedData = JSON.parse(this.state.textEditorData);
+      parsedData.forEach((item) => {
+        if (!item.specifier) {
+          item.specifier = '';
+        }
+        if (!item.parameterSets) {
+          item.parameterSets = [];
+        }
+        return item;
+      });
+      if (
+        !parsedData.every(
+          (item) =>
+            typeof item.specifier === 'string' &&
+            typeof item.parameterSets === 'object' &&
+            (item.parameterSets.length > 0 ||
+              item.parameterSets.every((paramSet) => typeof paramSet === 'object')),
+        )
+      ) {
+        throw new Error();
+      }
+      this.setState(() => ({
+        editMode: false,
+        collapseAllForm: true,
+        itemsToBeCreated: parsedData,
+      }));
+    } catch (error) {
+      alert(`Invalid JSON:${error}`);
+    }
+  };
+
+  cleanItemsToBeCreated = () => {
+    return this.state.itemsToBeCreated.map((item) => ({
+      ...item,
+      parameterSets: item.parameterSets.filter(
+        (def) => def.key.trim() !== '' && def.value.trim() !== '',
+      ),
     }));
   };
 
-  onUsageContextChange = (index, name) => event => {
-    let usageContext = this.state.usageContext.slice();
-    usageContext[index][name] = event.target.value;
-    if (index === usageContext.length - 1) {
-      usageContext = [...usageContext, { key: "", value: "" }];
+  updateItemsToBeCreated = (index, data) => {
+    if (!data) {
+      this.state.itemsToBeCreated.splice(0, 1);
+    } else {
+      this.state.itemsToBeCreated[index] = data;
     }
     this.setState(() => ({
-      usageContext
+      itemsToBeCreated: this.state.itemsToBeCreated,
     }));
   };
 
-  onUsageContextChange = index => event => {
-    let usageContexts = this.state.usageContexts.slice();
-    usageContexts[index] = event.target.value;
-    if (index === usageContexts.length - 1) {
-      usageContexts = [...usageContexts, ""];
-    }
+  addNewUsageContext = () => {
     this.setState(() => ({
-      usageContexts
+      itemsToBeCreated: [
+        ...this.state.itemsToBeCreated,
+        {
+          specifier: '',
+          parameterSets: [{ key: '', value: '' }],
+        },
+      ],
     }));
   };
 
-  addNewRow = dataSet => {
-    let usageContext = [...this.state.usageContext, { key: "", value: "" }];
+  setCollapse = (value) => {
     this.setState(() => ({
-      usageContext
+      collapseAllForm: false,
     }));
   };
 
-  deleteRow = index => () => {
-    let usageContext = this.state.usageContext.slice();
-    usageContext.splice(index, 1);
+  cancelEdit = () => {
     this.setState(() => ({
-      usageContext
+      editMode: false,
     }));
   };
 
   render() {
     const { classes } = this.props;
-    this.initializeData();
-    const { usageContext, usageContextName, bulkCreateJson } = this.state;
+    const { itemsToBeCreated, collapseAllForm, editMode, textEditorData } = this.state;
 
     return (
       <Grid container spacing={24}>
-        <Grid item xs={6}>
-          <Paper className={classes.paper}>
-            <Typography variant="h6">Create Usage Context By Form</Typography>
-            <TextField
-              label="Usage Context Name"
-              className={classes.textField}
-              value={usageContextName}
-              onChange={this.changeUsageContextName()}
-              margin="normal"
-            />
-            <Divider className={classes.divider} />
-            <Typography variant="subtitle1">Parameter Sets</Typography>
-            <form className={classes.container} noValidate autoComplete="off">
-              {usageContext.map((param, index) => (
-                <div key={index}>
-                  <TextField
-                    label="Variable Name"
-                    className={classes.textField}
-                    value={param.key}
-                    onChange={this.onUsageContextChange(index, "key")}
-                    margin="normal"
-                  />
-                  <TextField
-                    label="Param Set Name"
-                    className={classes.textField}
-                    value={param.value}
-                    margin="normal"
-                    onChange={this.onUsageContextChange(index, "value")}
-                  />
-                  {index === usageContext.length - 1 ? (
-                    <IconButton
-                      onClick={this.addNewRow}
-                      aria-label="Add"
-                      className={classes.addDeleteButton}
-                    >
-                      <AddIcon />
-                    </IconButton>
-                  ) : (
-                    ""
-                  )}
-                  {usageContext.length > 1 ? (
-                    <IconButton
-                      aria-label="Delete"
-                      onClick={this.deleteRow(index)}
-                      className={classes.addDeleteButton}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  ) : (
-                    ""
-                  )}
-                </div>
-              ))}
-            </form>
-          </Paper>
+        <Grid item xs={7}>
+          <div className={classes.title1Div}>
+            <Typography variant="h6" className={classes.title1}>
+              Create Usage Contexts by Form
+            </Typography>
+            <Typography variant="h6" className={classes.or}>
+              Or
+            </Typography>
+          </div>
+          <Divider className={classes.divider1} />
+          <div className={classes.formsDiv}>
+            {itemsToBeCreated.map((item, index) => (
+              <CreateParamSetForm
+                key={index}
+                index={index}
+                data={item}
+                collapse={collapseAllForm}
+                setCollapse={this.setCollapse}
+                isLast={index === itemsToBeCreated.length - 1}
+                addNewUsageContext={this.addNewUsageContext}
+                itemsToBeCreated={this.state.itemsToBeCreated}
+                updateItemsToBeCreated={this.updateItemsToBeCreated}
+              />
+            ))}
+          </div>
         </Grid>
-        <Grid item xs={6}>
-          <Paper className={classes.paper}>
-            <Typography variant="h6">Create Usage Context By JSON</Typography>
+        <Grid item xs={5}>
+          <Typography variant="h6" className={classes.title2}>
+            Edit the JSON or drag/drop a file here to create
+          </Typography>
+          <Divider className={classes.divider2} />
+          {editMode ? (
             <TextField
               label="Type or paste JSON here"
+              onChange={this.onEditorChange}
               style={{ margin: 8 }}
               fullWidth
               multiline={true}
-              rows={10}
+              rows={24}
               rowsMax={4}
               margin="normal"
               variant="filled"
-              value={bulkCreateJson}
+              value={textEditorData}
               InputLabelProps={{
-                shrink: true
+                shrink: true,
               }}
             />
-          </Paper>
+          ) : (
+            <div onClick={this.onReactJsonClick}>
+              <ReactJson
+                src={this.cleanItemsToBeCreated()}
+                theme="monokai"
+                style={{ fontSize: 14, minHeight: 500, padding: 20 }}
+                className={classes.jsonView}
+              />
+            </div>
+          )}
+
+          {editMode ? (
+            <div>
+              <Button
+                className={classes.majorButton}
+                color="primary"
+                variant="contained"
+                onClick={this.saveTextEditorData}
+              >
+                Save
+              </Button>
+              <Button onClick={this.cancelEdit} className={classes.majorButton}>
+                Cancel
+              </Button>
+            </div>
+          ) : (
+            <div>
+              <Button
+                className={classes.majorButton}
+                color="primary"
+                variant="contained"
+                disabled={editMode === true}
+              >
+                Submit
+              </Button>
+
+              <Button onClick={this.resetItemsToBeCreated} className={classes.majorButton}>
+                Reset
+              </Button>
+            </div>
+          )}
         </Grid>
       </Grid>
     );
   }
 }
 
-CreateUsageContext.propTypes = {
-  classes: PropTypes.object.isRequired
+CreateParamSet.propTypes = {
+  classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(CreateUsageContext);
+export default withStyles(styles)(CreateParamSet);
