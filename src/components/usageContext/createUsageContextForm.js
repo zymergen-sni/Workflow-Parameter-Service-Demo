@@ -187,6 +187,21 @@ class CreateUsageContextsForm extends React.Component {
     }));
   };
 
+  isValidStep = (index) => {
+    switch (index) {
+      case 0:
+        return this.props.data.specifier && this.props.data.specifier.length > 0;
+      case 1:
+        return (
+          this.props.data.parameterSets.length > 0 &&
+          this.props.data.parameterSets[0].key !== '' &&
+          this.props.data.parameterSets[0].value !== ''
+        );
+      default:
+        return true;
+    }
+  };
+
   render() {
     const { classes, data, isLast, collapse, setCollapse } = this.props;
     if (!data.parameterSets || data.parameterSets.length === 0) {
@@ -207,7 +222,7 @@ class CreateUsageContextsForm extends React.Component {
         <Stepper activeStep={activeStep} orientation="vertical">
           {steps.map((label, index) => (
             <Step key={label}>
-              <StepLabel>
+              <StepLabel error={!this.isValidStep(index) && activeStep > index}>
                 {data.specifier && index === 0 && activeStep !== 0 ? (
                   <div>
                     <Typography

@@ -134,13 +134,6 @@ class CreateParamSetForm extends React.Component {
           <form className={classes.container} noValidate autoComplete="off">
             {definition.map((param, index) => (
               <div key={index}>
-                {/* <TextField
-                  label="Key"
-                  className={classes.textField}
-                  value={param.key}
-                  onChange={this.onDefinitionChange(index, "key")}
-                  margin="normal"
-                /> */}
                 <ParamAutocomplete
                   updateParentState={this.updateParentState}
                   index={index}
@@ -244,6 +237,23 @@ class CreateParamSetForm extends React.Component {
     }));
   };
 
+  isValidStep = (index) => {
+    switch (index) {
+      case 0:
+        return this.props.data.label && this.props.data.label.length > 0;
+      case 1:
+        return (
+          this.props.data.definition.length > 0 &&
+          this.props.data.definition[0].key !== '' &&
+          this.props.data.definition[0].value !== ''
+        );
+      case 2:
+        return this.props.data.usages.length > 0 && this.props.data.usages[0] !== '';
+      default:
+        return true;
+    }
+  };
+
   render() {
     const { classes, data, collapse, isLast, setCollapse } = this.props;
     if (!data.definition || data.definition.length === 0) {
@@ -267,7 +277,7 @@ class CreateParamSetForm extends React.Component {
         <Stepper activeStep={activeStep} orientation="vertical">
           {steps.map((label, index) => (
             <Step key={label}>
-              <StepLabel>
+              <StepLabel error={!this.isValidStep(index) && activeStep > index}>
                 {data.label && index === 0 && activeStep !== 0 ? (
                   <div>
                     <Typography
