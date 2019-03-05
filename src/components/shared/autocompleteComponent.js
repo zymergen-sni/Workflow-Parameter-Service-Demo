@@ -30,15 +30,6 @@ function renderInputComponent(inputProps) {
   );
 }
 
-const suggestions = [
-  { label: 'Temperature', value: 'temp' },
-  { label: 'Shaker Speed', value: 'shakerSpeed' },
-  { label: 'Max Batch Size', value: 'maxBatchSize' },
-  { label: 'Pool Settings', value: 'poolSettings' },
-  { label: 'Platform Group', value: 'platformGroup' },
-  { label: 'Test for Params', value: 'test' },
-];
-
 function renderSuggestion(suggestion, { query, isHighlighted }) {
   const matches = match(suggestion.label, query);
   const parts = parse(suggestion.label, matches);
@@ -62,7 +53,7 @@ function renderSuggestion(suggestion, { query, isHighlighted }) {
   );
 }
 
-function getSuggestions(value) {
+function getSuggestions(value, suggestions) {
   const inputValue = deburr(value.trim()).toLowerCase();
   const inputLength = inputValue.length;
   let count = 0;
@@ -115,7 +106,7 @@ const styles = theme => ({
   },
 });
 
-class IntegrationAutosuggest extends React.Component {
+class AutocompleteComponent extends React.Component {
   state = {
     single: '',
     suggestions: [],
@@ -123,7 +114,7 @@ class IntegrationAutosuggest extends React.Component {
 
   handleSuggestionsFetchRequested = ({ value }) => {
     this.setState({
-      suggestions: getSuggestions(value),
+      suggestions: getSuggestions(value, this.props.options),
     });
   };
 
@@ -180,8 +171,8 @@ class IntegrationAutosuggest extends React.Component {
   }
 }
 
-IntegrationAutosuggest.propTypes = {
+AutocompleteComponent.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(IntegrationAutosuggest);
+export default withStyles(styles)(AutocompleteComponent);

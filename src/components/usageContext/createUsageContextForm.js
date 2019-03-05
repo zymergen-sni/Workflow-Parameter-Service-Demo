@@ -12,7 +12,7 @@ import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
-import ParamAutocomplete from '../paramSet/paramAutocomplete.js';
+import AutocompleteComponent from '../shared/autocompleteComponent.js';
 
 const styles = (theme) => ({
   actionButton: { marginRight: 20 },
@@ -34,6 +34,15 @@ const styles = (theme) => ({
     '&:hover': { color: '#777' },
   },
 });
+
+const contextOptions = [
+  { label: 'Temperature', value: 'temp' },
+  { label: 'Shaker Speed', value: 'shakerSpeed' },
+  { label: 'Max Batch Size', value: 'maxBatchSize' },
+  { label: 'Pool Settings', value: 'poolSettings' },
+  { label: 'Platform Group', value: 'platformGroup' },
+  { label: 'Test for Context', value: 'test' },
+];
 
 class CreateUsageContextsForm extends React.Component {
   state = { activeStep: 0 };
@@ -123,10 +132,11 @@ class CreateUsageContextsForm extends React.Component {
                   onChange={this.onDefinitionChange(index, "key")}
                   margin="normal"
                 /> */}
-                <ParamAutocomplete
+                <AutocompleteComponent
                   updateParentState={this.updateParentState}
                   index={index}
                   value={param.key}
+                  options={contextOptions}
                 />
                 <TextField
                   label="Value"
