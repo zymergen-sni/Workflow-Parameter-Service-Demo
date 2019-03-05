@@ -10,14 +10,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 
-const suggestions = [
-  { label: 'Temperature', value: 'temp' },
-  { label: 'Shaker Speed', value: 'shakerSpeed' },
-  { label: 'Max Batch Size', value: 'maxBatchSize' },
-  { label: 'Pool Settings', value: 'poolSettings' },
-  { label: 'Platform Group', value: 'platformGroup' },
-];
-
 function renderInputComponent(inputProps) {
   const { classes, inputRef = () => {}, ref, ...other } = inputProps;
 
@@ -37,6 +29,15 @@ function renderInputComponent(inputProps) {
     />
   );
 }
+
+const suggestions = [
+  { label: 'Temperature', value: 'temp' },
+  { label: 'Shaker Speed', value: 'shakerSpeed' },
+  { label: 'Max Batch Size', value: 'maxBatchSize' },
+  { label: 'Pool Settings', value: 'poolSettings' },
+  { label: 'Platform Group', value: 'platformGroup' },
+  { label: 'Test for Params', value: 'test' },
+];
 
 function renderSuggestion(suggestion, { query, isHighlighted }) {
   const matches = match(suggestion.label, query);
@@ -81,7 +82,7 @@ function getSuggestions(value) {
 }
 
 function getSuggestionValue(suggestion) {
-  return suggestion.label;
+  return suggestion.value;
 }
 
 const styles = theme => ({
