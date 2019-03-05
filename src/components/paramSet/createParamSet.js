@@ -70,7 +70,11 @@ class CreateParamSet extends React.Component {
   };
 
   onReactJsonClick = (event) => {
-    if (!this.state.editMode && event.target.className !== 'object-key') {
+    if (
+      !this.state.editMode &&
+      (event.target.firstChild && event.target.firstChild.nodeType != Node.TEXT_NODE) &&
+      event.target.className !== 'object-key'
+    ) {
       this.setState(() => ({
         editMode: true,
         textEditorData: JSON.stringify(this.cleanItemsToBeCreated(), null, '  '),
@@ -108,6 +112,7 @@ class CreateParamSet extends React.Component {
         throw new Error();
       }
       this.setState(() => ({
+        collapseAllForm: true,
         editMode: false,
         itemsToBeCreated: parsedData,
       }));
@@ -148,9 +153,21 @@ class CreateParamSet extends React.Component {
     }));
   };
 
+  setCollapse = (value) => {
+    this.setState(() => ({
+      collapseAllForm: false,
+    }));
+  };
+
+  cancelEdit = () => {
+    this.setState(() => ({
+      editMode: false,
+    }));
+  };
+
   render() {
-    const { classes, data } = this.props;
-    const { itemsToBeCreated, activeStep, editMode, textEditorData } = this.state;
+    const { classes } = this.props;
+    const { itemsToBeCreated, editMode, collapseAllForm, textEditorData } = this.state;
 
     return (
       <Grid container spacing={24}>
@@ -170,6 +187,8 @@ class CreateParamSet extends React.Component {
                 key={index}
                 index={index}
                 data={item}
+                collapse={collapseAllForm}
+                setCollapse={this.setCollapse}
                 isLast={index === itemsToBeCreated.length - 1}
                 addNewParamSet={this.addNewParamSet}
                 itemsToBeCreated={this.state.itemsToBeCreated}
@@ -178,7 +197,7 @@ class CreateParamSet extends React.Component {
             ))}
           </div>
         </Grid>
-        <Grid item xs={5} onClick={this.onReactJsonClick}>
+        <Grid item xs={5}>
           <Typography variant="h6" className={classes.title2}>
             Edit the JSON or drag/drop a file here to create
           </Typography>
@@ -190,7 +209,7 @@ class CreateParamSet extends React.Component {
               style={{ margin: 8 }}
               fullWidth
               multiline={true}
-              rows={20}
+              rows={25}
               rowsMax={4}
               margin="normal"
               variant="filled"
@@ -200,23 +219,15 @@ class CreateParamSet extends React.Component {
               }}
             />
           ) : (
-            <ReactJson
-              src={this.cleanItemsToBeCreated()}
-              theme="monokai"
-              style={{ fontSize: 14, minHeight: 500, padding: 20 }}
-              className={classes.jsonView}
-            />
+            <div onClick={this.onReactJsonClick}>
+              <ReactJson
+                src={this.cleanItemsToBeCreated()}
+                theme="monokai"
+                style={{ fontSize: 14, minHeight: 500, padding: 20 }}
+                className={classes.jsonView}
+              />
+            </div>
           )}
-
-          <Button
-            className={classes.majorButton}
-            color="primary"
-            variant="contained"
-            disabled={editMode === true}
-          >
-            Submit
-          </Button>
-
           {editMode ? (
             <div>
               <Button
@@ -227,12 +238,25 @@ class CreateParamSet extends React.Component {
               >
                 Save
               </Button>
+              <Button onClick={this.cancelEdit} className={classes.majorButton}>
+                Cancel
+              </Button>
+            </div>
+          ) : (
+            <div>
+              <Button
+                className={classes.majorButton}
+                color="primary"
+                variant="contained"
+                disabled={editMode === true}
+              >
+                Submit
+              </Button>
+
               <Button onClick={this.resetItemsToBeCreated} className={classes.majorButton}>
                 Reset
               </Button>
             </div>
-          ) : (
-            ''
           )}
         </Grid>
       </Grid>
