@@ -11,7 +11,9 @@ import Divider from '@material-ui/core/Divider';
 
 const styles = (theme) => ({
   jsonView: {
-    fontSize: 12,
+    '& span': { wordWrap: 'break-word' },
+    '& .variable-value': { maxWidth: '100%' },
+    '& .variable-value>div': { width: '100%' },
   },
   majorButton: { float: 'right', margin: 20 },
   title1Div: {
@@ -125,7 +127,9 @@ class CreateParamSet extends React.Component {
     return this.state.itemsToBeCreated.map((item) => ({
       ...item,
       usages: item.usages.filter((usage) => usage.trim() !== ''),
-      definition: item.definition.filter((def) => def.key.toString().trim() !== '' && def.value.toString().trim() !== ''),
+      definition: item.definition.filter(
+        (def) => def.key.toString().trim() !== '' && def.value.toString().trim() !== '',
+      ),
     }));
   };
 
@@ -229,12 +233,15 @@ class CreateParamSet extends React.Component {
               }}
             />
           ) : (
-            <div onClick={this.onReactJsonClick}>
+            <div onClick={this.onReactJsonClick} className={classes.jsonView}>
               <ReactJson
                 src={this.cleanItemsToBeCreated()}
                 theme="monokai"
-                style={{ fontSize: 14, minHeight: 500, padding: 20 }}
-                className={classes.jsonView}
+                style={{
+                  fontSize: 14,
+                  minHeight: 500,
+                  padding: 20,
+                }}
               />
             </div>
           )}

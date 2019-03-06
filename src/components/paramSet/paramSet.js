@@ -55,6 +55,10 @@ class ParamSet extends React.Component {
     });
   };
 
+  expand = () => {
+    this.props.history.replace('/paramSet', {});
+  };
+
   render() {
     const { classes } = this.props;
 
@@ -63,7 +67,7 @@ class ParamSet extends React.Component {
         <Typography component="h1" variant="h6" color="inherit" noWrap>
           {paramSetData.label}
 
-          <IconButton aria-label="Full Screen" aria-haspopup="false" href="/paramSet">
+          <IconButton aria-label="Full Screen" aria-haspopup="false" onClick={this.expand}>
             <FullscreenIcon />
           </IconButton>
           <FormControl className={classes.versionSelecrt}>
