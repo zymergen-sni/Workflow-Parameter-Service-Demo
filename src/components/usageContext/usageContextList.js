@@ -164,7 +164,7 @@ class UsageContextList extends React.Component {
             </Collapse>
           </Grid>
         </Grid>
-        <MainPanel />
+        <MainPanel history={this.props.history}/>
       </div>
     );
   }

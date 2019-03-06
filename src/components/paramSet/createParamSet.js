@@ -125,7 +125,7 @@ class CreateParamSet extends React.Component {
     return this.state.itemsToBeCreated.map((item) => ({
       ...item,
       usages: item.usages.filter((usage) => usage.trim() !== ''),
-      definition: item.definition.filter((def) => def.key.trim() !== '' && def.value.trim() !== ''),
+      definition: item.definition.filter((def) => def.key.toString().trim() !== '' && def.value.toString().trim() !== ''),
     }));
   };
 
@@ -168,6 +168,16 @@ class CreateParamSet extends React.Component {
   render() {
     const { classes } = this.props;
     const { itemsToBeCreated, editMode, collapseAllForm, textEditorData } = this.state;
+    try {
+      if (this.props.location.state.data) {
+        const tempData = this.props.location.state.data;
+        this.setState(() => ({
+          itemsToBeCreated: tempData,
+        }));
+        this.props.location.state.data = null;
+        this.props.history.replace('/createParamSet', {});
+      }
+    } catch (err) {}
 
     return (
       <Grid container spacing={24}>

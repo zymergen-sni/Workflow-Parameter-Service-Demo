@@ -18,10 +18,10 @@ import { mainListItems, secondaryListItems } from './components/nav/nav';
 import UsageContextList from './components/usageContext/usageContextList';
 import Settings from './components/settings/settings';
 import CreateParamSet from './components/paramSet/createParamSet';
-import createUsageContext from './components/usageContext/createUsageContext';
+import CreateUsageContext from './components/usageContext/createUsageContext';
 import { Route, withRouter } from 'react-router-dom';
 import BackgroundImg from './assets/header.jpg';
-import paramSet from './components/paramSet/paramSet';
+import ParamSet from './components/paramSet/paramSet';
 
 const drawerWidth = 240;
 
@@ -223,14 +223,17 @@ class Dashboard extends React.Component {
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
           <Typography variant="h4" gutterBottom component="h2">
-            <Route exact path="/" component={UsageContextList} />
+            <Route path="/" exact render={(props) => <UsageContextList {...props} />} />
+            <Route path="/createParamSet" render={(props) => <CreateParamSet {...props} />} />
             <Route
-              path="/createParamSet"
-              render={(props) => <CreateParamSet {...props} extra={someVariable} />}
+              path="/createUsageContext"
+              render={(props) => <CreateUsageContext {...props} />}
             />
-            <Route path="/createUsageContext" component={createUsageContext} />
-            <Route path="/settings" component={Settings} />
-            <Route path="/paramSet" component={paramSet} />
+            <Route path="/settings" render={(props) => <Settings {...props} />} />
+            <Route
+              path="/paramSet"
+              render={(props) => <ParamSet {...props} extra={someVariable} />}
+            />
           </Typography>
         </main>
       </div>

@@ -49,13 +49,10 @@ const { definition } = paramSetData;
 class ParamSet extends React.Component {
   state = { version: 0 };
   cloneParamSet = () => {
-    // this.props.router.push({
-    //   pathname: '/createParamSet',
-    //   state: {
-    //     id: 7,
-    //     color: 'green'
-    //   }
-    // })
+    this.props.history.push({
+      pathname: '/createParamSet',
+      state: { data: [paramSetData] },
+    });
   };
 
   render() {
