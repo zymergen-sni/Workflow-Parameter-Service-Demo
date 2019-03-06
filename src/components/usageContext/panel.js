@@ -10,10 +10,16 @@ import ParamSet from '../paramSet/paramSet';
 import ReactPaginate from 'react-paginate';
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
-import Chip from '@material-ui/core/Chip';
+import Checkbox from '@material-ui/core/Checkbox';
+import IconButton from '@material-ui/core/IconButton';
+import RefreshIcon from '@material-ui/icons/Refresh';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const styles = {
-  paginate: {
+  tableMenu: {
+    display: 'flex',
+    justifyContent: 'space-between',
     '& ul': {
       display: 'inline-block',
       paddingLeft: 15,
@@ -27,6 +33,14 @@ const styles = {
       color: '#437c98',
       fontWeight: 550,
     },
+  },
+  topCheckbox: {
+    height: 50,
+    marginLeft: 14,
+  },
+  checkbox: {
+    height: 27,
+    paddingLeft: 0,
   },
   itemName: { marginRight: 10 },
   expansionPanel: {
@@ -471,6 +485,7 @@ class MainPanel extends React.Component {
   };
 
   expandCollapse = (item) => (event, expanded) => {
+    if (event.target.nodeName === 'INPUT') return;
     this.setState((state) => {
       const index = state.usageContexts.findIndex(
         (i) => item.name === i.name && item.version === i.version,
@@ -497,25 +512,86 @@ class MainPanel extends React.Component {
 
   handlePageClick = () => {};
 
+  onUsageCheckboxClick = (index) => (event) => {
+    event.stopPropagation();
+    const usages = this.state.usageContexts;
+    usages[index].selected = !usages[index].selected;
+    this.setState((state) => ({
+      usageContexts: usages,
+    }));
+    this.updateTopCheckboxClick();
+  };
+
+  onTopCheckboxClick = (event) => {
+    const selected = this.state.topCheckbox !== 'all' ? 'all' : '';
+    const usages = this.state.usageContexts;
+    usages.forEach((item) => (item.selected = selected === 'all'));
+    this.setState((state) => ({
+      topCheckbox: selected,
+      usageContexts: usages,
+    }));
+  };
+
+  updateTopCheckboxClick = () => {
+    let selected = 'all';
+    const usages = this.state.usageContexts;
+    const selectedUsagesLength = usages.filter((usage) => usage.selected).length;
+    if (selectedUsagesLength > 0 && selectedUsagesLength < usages.length) {
+      selected = 'partial';
+    } else if (selectedUsagesLength === 0) {
+      selected = '';
+    }
+    this.setState((state) => ({
+      topCheckbox: selected,
+    }));
+  };
+
   render() {
-    const { expanded } = this.state;
-    const { classes, theme } = this.props;
+    const { topCheckbox } = this.state;
+    const { classes } = this.props;
     return (
-      <div className={classes.paginate}>
-        <ReactPaginate
-          previousLabel={'<'}
-          nextLabel={'>'}
-          breakLabel={'...'}
-          breakClassName={'break-me'}
-          pageCount={21}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={5}
-          onPageChange={this.handlePageClick}
-          containerClassName={'pagination'}
-          subContainerClassName={'pages pagination'}
-          activeClassName={'active'}
-        />
-        {this.state.usageContexts.map((item, key) => (
+      <div>
+        <div className={classes.tableMenu}>
+          <div>
+            <Checkbox
+              className={classes.topCheckbox}
+              checked={topCheckbox === 'all'}
+              onChange={this.onTopCheckboxClick}
+              indeterminate={topCheckbox === 'partial' ? true : false}
+              color="primary"
+            />
+            {!topCheckbox || topCheckbox === '' ? (
+              <IconButton color="inherit" aria-label="Refresh">
+                <RefreshIcon />
+              </IconButton>
+            ) : (
+              <span>
+                <IconButton color="default" aria-label="Clone">
+                  <FileCopyIcon />
+                </IconButton>
+                <IconButton color="secondary" aria-label="Delete">
+                  <DeleteIcon className={classes.delete} />
+                </IconButton>
+              </span>
+            )}
+          </div>
+
+          <ReactPaginate
+            previousLabel={'<'}
+            nextLabel={'>'}
+            breakLabel={'...'}
+            breakClassName={'break-me'}
+            pageCount={21}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={this.handlePageClick}
+            containerClassName={'pagination'}
+            subContainerClassName={'pages pagination'}
+            activeClassName={'active'}
+          />
+        </div>
+
+        {this.state.usageContexts.map((item, index) => (
           <ExpansionPanel
             key={item.name + item.version}
             square
@@ -528,6 +604,13 @@ class MainPanel extends React.Component {
                 style={{ background: item.isDefault ? '#acd45d' : '#b67ed2' }}
               />
               <div>
+                <Checkbox
+                  className={classes.checkbox}
+                  checked={!!item.selected}
+                  onChange={this.onUsageCheckboxClick(index)}
+                  color="primary"
+                />
+                {item.selected}
                 <Typography variant="subtitle1" className={classes.itemName}>
                   {item.name}
                 </Typography>
@@ -547,8 +630,8 @@ class MainPanel extends React.Component {
               )}
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
-              {item.parameterSets.map((paramSet, index) => (
-                <ParamSetList key={index} data={paramSet} toggleDrawer={this.toggleDrawer()} />
+              {item.parameterSets.map((paramSet, index2) => (
+                <ParamSetList key={index2} data={paramSet} toggleDrawer={this.toggleDrawer()} />
               ))}
               <Button variant="contained" className={classes.button}>
                 Create New Parmeter Set
