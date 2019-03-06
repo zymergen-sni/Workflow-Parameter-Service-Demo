@@ -34,8 +34,8 @@ const styles = (theme) => ({
 });
 
 const paramSetData = {
-  name: 'exampleParamSet0',
-  definition: [{ maxBatchSize: 2, anotherParam: 'some text' }, { maxBatchSize: 1 }],
+  label: 'exampleParamSet0',
+  definition: [{ key: 'maxBatchSize', value: 2 }, { key: 'anotherParam', value: 'some text' }],
   usages: [
     'B0001:v1.0.2',
     'flowId:workflowPhaseCA:buildingBlockCA:unitCA',
@@ -48,15 +48,23 @@ const { definition } = paramSetData;
 
 class ParamSet extends React.Component {
   state = { version: 0 };
+  cloneParamSet = () => {
+    // this.props.router.push({
+    //   pathname: '/createParamSet',
+    //   state: {
+    //     id: 7,
+    //     color: 'green'
+    //   }
+    })
+  };
 
   render() {
-    const { classes, theme } = this.props;
-    const { openFilter, processModelFilter } = this.state;
+    const { classes } = this.props;
 
     return (
       <div className={classes.root}>
         <Typography component="h1" variant="h6" color="inherit" noWrap>
-          {paramSetData.name}
+          {paramSetData.label}
 
           <IconButton aria-label="Full Screen" aria-haspopup="false" href="/paramSet">
             <FullscreenIcon />
@@ -86,12 +94,9 @@ class ParamSet extends React.Component {
           Edit
           <EditdIcon className={classes.rightIcon} />{' '}
         </Button>
-        <Button variant="contained" className={classes.button}>
+        <Button variant="contained" className={classes.button} onClick={this.cloneParamSet}>
           Clone
           <FileCopyIcon className={classes.rightIcon} />
-        </Button>
-        <Button variant="contained" className={classes.button}>
-          Set as active
         </Button>
         <Button variant="contained" color="secondary" className={classes.button}>
           Delete
@@ -105,12 +110,12 @@ class ParamSet extends React.Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {Object.keys(definition[0]).map((key) => (
-              <TableRow key={key}>
+            {definition.map((def) => (
+              <TableRow key={def.key}>
                 <TableCell component="th" scope="row">
-                  {key}
+                  {def.key}
                 </TableCell>
-                <TableCell align="right">{definition[0][key]}</TableCell>
+                <TableCell align="right">{def.value}</TableCell>
               </TableRow>
             ))}
           </TableBody>
