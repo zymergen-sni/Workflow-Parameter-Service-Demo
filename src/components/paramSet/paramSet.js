@@ -55,7 +55,7 @@ class ParamSet extends React.Component {
     //     id: 7,
     //     color: 'green'
     //   }
-    })
+    // })
   };
 
   render() {

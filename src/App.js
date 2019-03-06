@@ -158,6 +158,7 @@ class Dashboard extends React.Component {
 
   render() {
     const { classes, history } = this.props;
+    const someVariable = 'a';
     this.updatePathName(history.location.pathname);
     // Listen to history changes.
     // You can unlisten by calling the constant (`unlisten()`).
@@ -223,7 +224,10 @@ class Dashboard extends React.Component {
           <div className={classes.appBarSpacer} />
           <Typography variant="h4" gutterBottom component="h2">
             <Route exact path="/" component={UsageContextList} />
-            <Route path="/createParamSet" component={CreateParamSet} />
+            <Route
+              path="/createParamSet"
+              render={(props) => <CreateParamSet {...props} extra={someVariable} />}
+            />
             <Route path="/createUsageContext" component={createUsageContext} />
             <Route path="/settings" component={Settings} />
             <Route path="/paramSet" component={paramSet} />
