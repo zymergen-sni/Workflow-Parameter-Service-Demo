@@ -60,10 +60,10 @@ class CreateParamSetForm extends React.Component {
             : 'Edit parameters',
       },
       {
-        isActive: 'Add usages',
+        isActive: 'Add usages (optional)',
         default:
           this.props.data.usages.length === 1 && this.props.data.usages[0] === ''
-            ? 'Add usages'
+            ? 'Add usages (optional)'
             : 'Edit usages',
       },
     ];
@@ -95,17 +95,31 @@ class CreateParamSetForm extends React.Component {
     this.props.updateItemsToBeCreated(this.props.index, this.props.data);
   };
 
-  addNewRow = (dataSet) => {
+  addNewDefinitionRow = (dataSet) => {
     let definition = this.props.data.definition.slice();
     definition = [...definition, { key: '', value: '' }];
     this.props.data.definition = definition;
     this.props.updateItemsToBeCreated(this.props.index, this.props.data);
   };
 
-  deleteRow = (index) => () => {
+  deleteDefinitionRow = (index) => () => {
     let definition = this.props.data.definition.slice();
     definition.splice(index, 1);
     this.props.data.definition = definition;
+    this.props.updateItemsToBeCreated(this.props.index, this.props.data);
+  };
+
+  addNewUsageRow = (dataSet) => {
+    let usages = this.props.data.usages.slice();
+    usages = [...usages, ''];
+    this.props.data.usages = usages;
+    this.props.updateItemsToBeCreated(this.props.index, this.props.data);
+  };
+
+  deleteUsageRow = (index) => () => {
+    let usages = this.props.data.usages.slice();
+    usages.splice(index, 1);
+    this.props.data.usages = usages;
     this.props.updateItemsToBeCreated(this.props.index, this.props.data);
   };
 
@@ -158,7 +172,7 @@ class CreateParamSetForm extends React.Component {
                 />
                 {index === definition.length - 1 ? (
                   <IconButton
-                    onClick={this.addNewRow}
+                    onClick={this.addNewDefinitionRow}
                     aria-label="Add"
                     className={classes.addDeleteButton}
                   >
@@ -170,7 +184,7 @@ class CreateParamSetForm extends React.Component {
                 {definition.length > 1 ? (
                   <IconButton
                     aria-label="Delete"
-                    onClick={this.deleteRow(index)}
+                    onClick={this.deleteDefinitionRow(index)}
                     className={classes.addDeleteButton}
                   >
                     <DeleteIcon />
@@ -197,7 +211,7 @@ class CreateParamSetForm extends React.Component {
                 />
                 {index === usages.length - 1 ? (
                   <IconButton
-                    onClick={this.addNewRow}
+                    onClick={this.addNewUsageRow}
                     aria-label="Add"
                     className={classes.addDeleteButton}
                   >
@@ -209,7 +223,7 @@ class CreateParamSetForm extends React.Component {
                 {usages.length > 1 ? (
                   <IconButton
                     aria-label="Delete"
-                    onClick={this.deleteRow(index)}
+                    onClick={this.deleteUsageRow(index)}
                     className={classes.addDeleteButton}
                   >
                     <DeleteIcon />
@@ -258,7 +272,7 @@ class CreateParamSetForm extends React.Component {
           this.props.data.definition[0].value !== ''
         );
       case 2:
-        return this.props.data.usages.length > 0 && this.props.data.usages[0] !== '';
+        return true;
       default:
         return true;
     }
