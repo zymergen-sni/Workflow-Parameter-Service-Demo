@@ -51,7 +51,7 @@ class ParamSet extends React.Component {
   cloneParamSet = () => {
     this.props.history.push({
       pathname: '/createParamSet',
-      state: { data: [paramSetData] },
+      state: { data: [{ ...paramSetData, label: paramSetData.label + '_1' }] },
     });
   };
 

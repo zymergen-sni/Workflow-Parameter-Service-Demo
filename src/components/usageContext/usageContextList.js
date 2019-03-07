@@ -30,8 +30,7 @@ const styles = theme => ({
     padding: 10
   },
   gridContainer: {
-    flexGrow: 1,
-    marginBottom: 15
+    flexGrow: 1
   },
   formControl: {
     margin: 10,

@@ -15,6 +15,7 @@ import IconButton from '@material-ui/core/IconButton';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import DeleteIcon from '@material-ui/icons/Delete';
+import TestData from './usageContextTestData';
 
 const styles = {
   tableMenu: {
@@ -110,385 +111,14 @@ const ExpansionPanelDetails = withStyles((theme) => ({
 class MainPanel extends React.Component {
   state = {
     showParamSetDrawer: false,
-    usageContexts: [
-      {
-        name: 'B0001:v1.0.2',
-        version: 1,
-        isDefault: true,
-        parameterSets: [
-          {
-            isDefault: true,
-            parameterSet: [
-              {
-                variable: 'tecanParams',
-                paramSet: 'tecan_echo_001',
-              },
-              {
-                variable: 'poolSettings',
-                paramSet: 'pooling_settings_002',
-              },
-            ],
-          },
-          {
-            parameterSet: [
-              {
-                variable: 'tecanParams',
-                paramSet: 'tecan_echo_002',
-              },
-              {
-                variable: 'poolSettings',
-                paramSet: 'pooling_settings_003',
-              },
-            ],
-          },
-        ],
-      },
-      {
-        name: 'B0001_call2:W1008_call1:M7777',
-        version: 1,
-        parameterSets: [
-          {
-            isDefault: true,
-            parameterSet: [
-              {
-                variable: 'tecanParams',
-                paramSet: 'tecan_echo_002',
-              },
-              {
-                variable: 'poolSettings',
-                paramSet: 'pooling_settings_003',
-              },
-            ],
-          },
-          {
-            parameterSet: [
-              {
-                variable: 'tecanParams',
-                paramSet: 'tecan_echo_003',
-              },
-              {
-                variable: 'poolSettings',
-                paramSet: 'pooling_settings_004',
-              },
-            ],
-          },
-        ],
-      },
-      {
-        name: 'B0001_call1:W1008_call2:M7777',
-        version: 1,
-        parameterSets: [
-          {
-            isDefault: true,
-            parameterSet: [
-              {
-                variable: 'tecanParams',
-                paramSet: 'tecan_echo_003',
-              },
-              {
-                variable: 'poolSettings',
-                paramSet: 'pooling_settings_003',
-              },
-            ],
-          },
-        ],
-      },
-
-      {
-        name: 'E0001_call2:F1002_call1:M6677',
-        version: 1,
-        parameterSets: [
-          {
-            isDefault: true,
-            parameterSet: [
-              {
-                variable: 'tecanParams',
-                paramSet: 'tecan_echo_002',
-              },
-              {
-                variable: 'poolSettings',
-                paramSet: 'pooling_settings_003',
-              },
-            ],
-          },
-          {
-            parameterSet: [
-              {
-                variable: 'tecanParams',
-                paramSet: 'tecan_echo_003',
-              },
-              {
-                variable: 'poolSettings',
-                paramSet: 'pooling_settings_004',
-              },
-            ],
-          },
-        ],
-      },
-
-      {
-        name: 'G0001_call2:W1019_call1:M6679',
-        version: 1,
-        parameterSets: [
-          {
-            isDefault: true,
-            parameterSet: [
-              {
-                variable: 'tecanParams',
-                paramSet: 'tecan_echo_002',
-              },
-              {
-                variable: 'poolSettings',
-                paramSet: 'pooling_settings_003',
-              },
-            ],
-          },
-          {
-            parameterSet: [
-              {
-                variable: 'tecanParams',
-                paramSet: 'tecan_echo_003',
-              },
-              {
-                variable: 'poolSettings',
-                paramSet: 'pooling_settings_004',
-              },
-            ],
-          },
-        ],
-      },
-      {
-        name: 'C0001:v1.0.1',
-        version: 1,
-        isDefault: true,
-        parameterSets: [
-          {
-            isDefault: true,
-            parameterSet: [
-              {
-                variable: 'tecanParams',
-                paramSet: 'tecan_echo_001',
-              },
-              {
-                variable: 'poolSettings',
-                paramSet: 'pooling_settings_002',
-              },
-            ],
-          },
-          {
-            parameterSet: [
-              {
-                variable: 'tecanParams',
-                paramSet: 'tecan_echo_002',
-              },
-              {
-                variable: 'poolSettings',
-                paramSet: 'pooling_settings_003',
-              },
-            ],
-          },
-        ],
-      },
-
-      {
-        name: 'F0001_call2:B1008_call1:A1001',
-        version: 1,
-        parameterSets: [
-          {
-            isDefault: true,
-            parameterSet: [
-              {
-                variable: 'tecanParams',
-                paramSet: 'tecan_echo_002',
-              },
-              {
-                variable: 'poolSettings',
-                paramSet: 'pooling_settings_003',
-              },
-            ],
-          },
-          {
-            parameterSet: [
-              {
-                variable: 'tecanParams',
-                paramSet: 'tecan_echo_003',
-              },
-              {
-                variable: 'poolSettings',
-                paramSet: 'pooling_settings_004',
-              },
-            ],
-          },
-        ],
-      },
-
-      {
-        name: 'B0001_call3:W1008_call2:G1022',
-        version: 1,
-        parameterSets: [
-          {
-            isDefault: true,
-            parameterSet: [
-              {
-                variable: 'tecanParams',
-                paramSet: 'tecan_echo_002',
-              },
-              {
-                variable: 'poolSettings',
-                paramSet: 'pooling_settings_003',
-              },
-            ],
-          },
-          {
-            parameterSet: [
-              {
-                variable: 'tecanParams',
-                paramSet: 'tecan_echo_003',
-              },
-              {
-                variable: 'poolSettings',
-                paramSet: 'pooling_settings_004',
-              },
-            ],
-          },
-        ],
-      },
-
-      {
-        name: 'C0001_call4:Z1008_call1:E2990',
-        version: 1,
-        parameterSets: [
-          {
-            isDefault: true,
-            parameterSet: [
-              {
-                variable: 'tecanParams',
-                paramSet: 'tecan_echo_002',
-              },
-              {
-                variable: 'poolSettings',
-                paramSet: 'pooling_settings_003',
-              },
-            ],
-          },
-          {
-            parameterSet: [
-              {
-                variable: 'tecanParams',
-                paramSet: 'tecan_echo_003',
-              },
-              {
-                variable: 'poolSettings',
-                paramSet: 'pooling_settings_004',
-              },
-            ],
-          },
-        ],
-      },
-
-      {
-        name: 'B0001_call2:W1008_call1:G2000',
-        version: 1,
-        parameterSets: [
-          {
-            isDefault: true,
-            parameterSet: [
-              {
-                variable: 'tecanParams',
-                paramSet: 'tecan_echo_002',
-              },
-              {
-                variable: 'poolSettings',
-                paramSet: 'pooling_settings_003',
-              },
-            ],
-          },
-          {
-            parameterSet: [
-              {
-                variable: 'tecanParams',
-                paramSet: 'tecan_echo_003',
-              },
-              {
-                variable: 'poolSettings',
-                paramSet: 'pooling_settings_004',
-              },
-            ],
-          },
-        ],
-      },
-
-      {
-        name: 'C0001_call2:W1008_call1:G2000',
-        version: 1,
-        parameterSets: [
-          {
-            isDefault: true,
-            parameterSet: [
-              {
-                variable: 'tecanParams',
-                paramSet: 'tecan_echo_002',
-              },
-              {
-                variable: 'poolSettings',
-                paramSet: 'pooling_settings_003',
-              },
-            ],
-          },
-          {
-            parameterSet: [
-              {
-                variable: 'tecanParams',
-                paramSet: 'tecan_echo_003',
-              },
-              {
-                variable: 'poolSettings',
-                paramSet: 'pooling_settings_004',
-              },
-            ],
-          },
-        ],
-      },
-
-      {
-        name: 'B0001_call5:C1_call1:E1029',
-        version: 1,
-        parameterSets: [
-          {
-            isDefault: true,
-            parameterSet: [
-              {
-                variable: 'tecanParams',
-                paramSet: 'tecan_echo_002',
-              },
-              {
-                variable: 'poolSettings',
-                paramSet: 'pooling_settings_003',
-              },
-            ],
-          },
-          {
-            parameterSet: [
-              {
-                variable: 'tecanParams',
-                paramSet: 'tecan_echo_003',
-              },
-              {
-                variable: 'poolSettings',
-                paramSet: 'pooling_settings_004',
-              },
-            ],
-          },
-        ],
-      },
-    ],
+    usageContexts: TestData,
   };
 
   expandCollapse = (item) => (event, expanded) => {
     if (event.target.nodeName === 'INPUT') return;
     this.setState((state) => {
       const index = state.usageContexts.findIndex(
-        (i) => item.name === i.name && item.version === i.version,
+        (i) => item.specifier === i.specifier && item.version === i.version,
       );
       state.usageContexts[index].expanded = !state.usageContexts[index].expanded;
 
@@ -546,9 +176,26 @@ class MainPanel extends React.Component {
     }));
   };
 
+  cloneParamSet = () => {
+    const selectedUsages = this.state.usageContexts.filter((usage) => usage.selected);
+    const selectedUsagesWithActiveParamSets = selectedUsages.map((usage) => ({
+      specifier: usage.specifier + '_1',
+      parameterSets: usage.parameterSets.find((ps) => ps.isDefault).parameterSet,
+    }));
+    this.props.history.push({
+      pathname: '/createUsageContext',
+      state: {
+        data: selectedUsagesWithActiveParamSets,
+      },
+    });
+  };
+
   render() {
     const { topCheckbox } = this.state;
     const { classes } = this.props;
+    if (topCheckbox === undefined) {
+      this.updateTopCheckboxClick();
+    }
     return (
       <div>
         <div className={classes.tableMenu}>
@@ -566,7 +213,7 @@ class MainPanel extends React.Component {
               </IconButton>
             ) : (
               <span>
-                <IconButton color="default" aria-label="Clone">
+                <IconButton color="default" onClick={this.cloneParamSet} aria-label="Clone">
                   <FileCopyIcon />
                 </IconButton>
                 <IconButton color="secondary" aria-label="Delete">
@@ -593,7 +240,7 @@ class MainPanel extends React.Component {
 
         {this.state.usageContexts.map((item, index) => (
           <ExpansionPanel
-            key={item.name + item.version}
+            key={item.specifier + item.version}
             square
             expanded={item.expanded === true}
             onChange={this.expandCollapse(item)}
@@ -612,7 +259,7 @@ class MainPanel extends React.Component {
                 />
                 {item.selected}
                 <Typography variant="subtitle1" className={classes.itemName}>
-                  {item.name}
+                  {item.specifier}
                 </Typography>
                 <Typography variant="subtitle1" className={classes.alias}>
                   {item.alias}
@@ -630,8 +277,8 @@ class MainPanel extends React.Component {
               )}
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
-              {item.parameterSets.map((paramSet, index2) => (
-                <ParamSetList key={index2} data={paramSet} toggleDrawer={this.toggleDrawer()} />
+              {item.parameterSets.map((value, index2) => (
+                <ParamSetList key={index2} data={value} toggleDrawer={this.toggleDrawer()} />
               ))}
               <Button variant="contained" className={classes.button}>
                 Create New Parmeter Set

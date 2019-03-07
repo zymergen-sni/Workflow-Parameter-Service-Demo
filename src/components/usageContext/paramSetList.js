@@ -98,8 +98,8 @@ class ParamSetList extends React.Component {
               >
                 <ListItemText
                   className={classes.listText}
-                  primary={paramSet.paramSet}
-                  secondary={paramSet.variable}
+                  primary={paramSet.value}
+                  secondary={paramSet.key}
                 />
                 <div className={classes.paramSetButtonDiv}>
                   <IconButton aria-label="Edit" aria-haspopup="true">

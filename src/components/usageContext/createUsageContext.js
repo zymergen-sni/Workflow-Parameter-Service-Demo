@@ -161,6 +161,16 @@ class CreateParamSet extends React.Component {
   render() {
     const { classes } = this.props;
     const { itemsToBeCreated, collapseAllForm, editMode, textEditorData } = this.state;
+    try {
+      if (this.props.location.state.data) {
+        const tempData = this.props.location.state.data;
+        this.setState(() => ({
+          itemsToBeCreated: tempData,
+        }));
+        this.props.location.state.data = null;
+        this.props.history.replace('/createUsageContext', {});
+      }
+    } catch (err) {}
 
     return (
       <Grid container spacing={24}>
