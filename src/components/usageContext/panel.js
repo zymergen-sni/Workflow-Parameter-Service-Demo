@@ -266,15 +266,6 @@ class MainPanel extends React.Component {
                 </Typography>
                 <Typography variant="subtitle1">{`(${item.parameterSets.length})`}</Typography>
               </div>
-              {!item.isDefault ? (
-                <div>
-                  <Button variant="outlined" color="inherit" className={classes.defaultForSpecific}>
-                    Default: B0001:V1.0.2
-                  </Button>
-                </div>
-              ) : (
-                ''
-              )}
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
               {item.parameterSets.map((value, index2) => (

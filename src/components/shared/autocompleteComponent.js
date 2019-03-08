@@ -17,7 +17,7 @@ function renderInputComponent(inputProps) {
     <TextField
       margin="dense"
       InputProps={{
-        inputRef: node => {
+        inputRef: (node) => {
           ref(node);
           inputRef(node);
         },
@@ -60,7 +60,7 @@ function getSuggestions(value, suggestions) {
 
   return inputLength === 0
     ? []
-    : suggestions.filter(suggestion => {
+    : suggestions.filter((suggestion) => {
         const keep =
           count < 5 && suggestion.label.slice(0, inputLength).toLowerCase() === inputValue;
 
@@ -76,11 +76,11 @@ function getSuggestionValue(suggestion) {
   return suggestion.value;
 }
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     margin: '10px',
     flexGrow: 1,
-    display: "inline-flex",
+    display: 'inline-flex',
   },
   container: {
     position: 'relative',
@@ -124,7 +124,7 @@ class AutocompleteComponent extends React.Component {
     });
   };
 
-  handleChange = name => (event, { newValue }) => {
+  handleChange = (name) => (event, { newValue }) => {
     this.setState({
       [name]: newValue,
     });
@@ -133,6 +133,7 @@ class AutocompleteComponent extends React.Component {
 
   render() {
     const { classes, value } = this.props;
+    const label = this.props.label || 'Key';
     this.state.single = value;
 
     const autosuggestProps = {
@@ -150,7 +151,7 @@ class AutocompleteComponent extends React.Component {
           {...autosuggestProps}
           inputProps={{
             classes,
-            label: 'Key',
+            label,
             value: this.state.single,
             onChange: this.handleChange('single'),
           }}
@@ -160,7 +161,7 @@ class AutocompleteComponent extends React.Component {
             suggestionsList: classes.suggestionsList,
             suggestion: classes.suggestion,
           }}
-          renderSuggestionsContainer={options => (
+          renderSuggestionsContainer={(options) => (
             <Paper {...options.containerProps} square>
               {options.children}
             </Paper>

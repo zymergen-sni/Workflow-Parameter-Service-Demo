@@ -45,8 +45,7 @@ class CreateParamSet extends React.Component {
     itemsToBeCreated: [
       {
         label: '',
-        definition: [{ key: '', value: '' }],
-        usages: [''],
+        definition: [{ key: '', value: '', type: 'string' }],
       },
     ],
   };
@@ -56,7 +55,6 @@ class CreateParamSet extends React.Component {
       {
         label: '',
         definition: [{ key: '', value: '' }],
-        usages: [''],
       },
     ];
     this.setState(() => ({
@@ -96,9 +94,6 @@ class CreateParamSet extends React.Component {
         if (!item.definition) {
           item.definition = [];
         }
-        if (!item.usages) {
-          item.usages = [];
-        }
         return item;
       });
       if (
@@ -106,8 +101,6 @@ class CreateParamSet extends React.Component {
           (item) =>
             typeof item.label === 'string' &&
             typeof item.definition === 'object' &&
-            typeof item.usages === 'object' &&
-            (item.usages.length === 0 || item.usages.every((usage) => typeof usage === 'string')) &&
             (item.definition.length > 0 ||
               item.definition.every((usage) => typeof definition === 'object')),
         )
@@ -127,7 +120,6 @@ class CreateParamSet extends React.Component {
   cleanItemsToBeCreated = () => {
     return this.state.itemsToBeCreated.map((item) => ({
       ...item,
-      usages: item.usages.filter((usage) => usage.trim() !== ''),
       definition: item.definition.filter(
         (def) => def.key.toString().trim() !== '' && def.value.toString().trim() !== '',
       ),
@@ -136,7 +128,7 @@ class CreateParamSet extends React.Component {
 
   updateItemsToBeCreated = (index, data) => {
     if (!data) {
-      this.state.itemsToBeCreated.splice(0, 1);
+      this.state.itemsToBeCreated.splice(index, 1);
     } else {
       this.state.itemsToBeCreated[index] = data;
     }
@@ -152,9 +144,18 @@ class CreateParamSet extends React.Component {
         {
           label: '',
           definition: [{ key: '', value: '' }],
-          usages: [''],
         },
       ],
+    }));
+  };
+
+  cloneParamSet = (data, copyNumber) => () => {
+    if (Number(copyNumber) < 1) return;
+    data = JSON.parse(JSON.stringify(data));
+    data.label = '';
+    const newData = new Array(Number(copyNumber)).fill(null).map(() => JSON.parse(JSON.stringify(data)));
+    this.setState(() => ({
+      itemsToBeCreated: [...this.state.itemsToBeCreated, ...newData],
     }));
   };
 
@@ -206,6 +207,7 @@ class CreateParamSet extends React.Component {
                 setCollapse={this.setCollapse}
                 isLast={index === itemsToBeCreated.length - 1}
                 addNewParamSet={this.addNewParamSet}
+                cloneParamSet={this.cloneParamSet}
                 itemsToBeCreated={this.state.itemsToBeCreated}
                 updateItemsToBeCreated={this.updateItemsToBeCreated}
               />

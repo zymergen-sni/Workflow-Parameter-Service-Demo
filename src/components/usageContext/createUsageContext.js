@@ -125,7 +125,7 @@ class CreateParamSet extends React.Component {
 
   updateItemsToBeCreated = (index, data) => {
     if (!data) {
-      this.state.itemsToBeCreated.splice(0, 1);
+      this.state.itemsToBeCreated.splice(index, 1);
     } else {
       this.state.itemsToBeCreated[index] = data;
     }
