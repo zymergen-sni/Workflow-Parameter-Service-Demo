@@ -8,6 +8,7 @@ import ReactJson from 'react-json-view';
 import Button from '@material-ui/core/Button';
 import CreateParamSetForm from './createParamSetForm';
 import Divider from '@material-ui/core/Divider';
+import UploadComponent from '../shared/uploadComponent';
 
 const styles = (theme) => ({
   jsonView: {
@@ -216,6 +217,7 @@ class CreateParamSet extends React.Component {
             Edit the JSON or drag/drop a file here to create
           </Typography>
           <Divider className={classes.divider2} />
+          <UploadComponent className={classes.uploadComponent}></UploadComponent>
           {editMode ? (
             <TextField
               label="Type or paste JSON here"
