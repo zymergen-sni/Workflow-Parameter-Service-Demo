@@ -13,10 +13,12 @@ import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AutocompleteComponent from '../shared/autocompleteComponent.js';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 
 const styles = (theme) => ({
-  actionButton: { marginRight: 20 },
-  textField: { margin: 10, flexGrow: 1 },
+  textField: { flexGrow: 1, marginLeft: 10, marginTop: 14 },
   addDeleteButton: { marginTop: 14 },
   paramSetNameLabel: {
     color: '#ca6b23',
@@ -33,6 +35,15 @@ const styles = (theme) => ({
     marginLeft: 10,
     '&:hover': { color: '#777' },
   },
+  typeSelector: {
+    height: 50,
+  },
+  actionsContainer: { display: 'flex' },
+  clonePrevious: { display: 'flex', alignItems: 'center' },
+  copyNumber: { width: 35, marginTop: 0, '& input': { textAlign: 'right' } },
+  clonePreviousButton: { marginLeft: 10 },
+  actionButton: { marginRight: 20 },
+  buttonsContainer: { marginTop: 40 },
 });
 
 const paramOptions = [
@@ -45,7 +56,7 @@ const paramOptions = [
 ];
 
 class CreateParamSetForm extends React.Component {
-  state = { activeStep: 0 };
+  state = { activeStep: 0, copyNumber: 1 };
 
   getSteps = () => {
     return [
@@ -59,14 +70,14 @@ class CreateParamSetForm extends React.Component {
             ? 'Add parameters'
             : 'Edit parameters',
       },
-      {
-        isActive: 'Add usages (optional)',
-        default:
-          this.props.data.usages.length === 1 && this.props.data.usages[0] === ''
-            ? 'Add usages (optional)'
-            : 'Edit usages',
-      },
     ];
+  };
+
+  onCopyNumberChange = (event) => {
+    const copyNumber = event.target.value;
+    this.setState(() => ({
+      copyNumber: copyNumber,
+    }));
   };
 
   changeParamSetName = (event) => {
@@ -79,25 +90,15 @@ class CreateParamSetForm extends React.Component {
     let definition = this.props.data.definition.slice();
     definition[index][name] = event.target.value;
     if (index === definition.length - 1) {
-      definition = [...definition, { key: '', value: '' }];
+      definition = [...definition, { key: '', value: '', type: 'string' }];
     }
     this.props.data.definition = definition;
     this.props.updateItemsToBeCreated(this.props.index, this.props.data);
   };
 
-  onUsageContextChange = (index) => (event) => {
-    let usages = this.props.data.usages.slice();
-    usages[index] = event.target.value;
-    if (index === usages.length - 1) {
-      usages = [...usages, ''];
-    }
-    this.props.data.usages = usages;
-    this.props.updateItemsToBeCreated(this.props.index, this.props.data);
-  };
-
   addNewDefinitionRow = (dataSet) => {
     let definition = this.props.data.definition.slice();
-    definition = [...definition, { key: '', value: '' }];
+    definition = [...definition, { key: '', value: '', type: 'string' }];
     this.props.data.definition = definition;
     this.props.updateItemsToBeCreated(this.props.index, this.props.data);
   };
@@ -109,20 +110,6 @@ class CreateParamSetForm extends React.Component {
     this.props.updateItemsToBeCreated(this.props.index, this.props.data);
   };
 
-  addNewUsageRow = (dataSet) => {
-    let usages = this.props.data.usages.slice();
-    usages = [...usages, ''];
-    this.props.data.usages = usages;
-    this.props.updateItemsToBeCreated(this.props.index, this.props.data);
-  };
-
-  deleteUsageRow = (index) => () => {
-    let usages = this.props.data.usages.slice();
-    usages.splice(index, 1);
-    this.props.data.usages = usages;
-    this.props.updateItemsToBeCreated(this.props.index, this.props.data);
-  };
-
   removeCurrentItem = () => {
     this.props.updateItemsToBeCreated(this.props.index, null);
   };
@@ -131,7 +118,6 @@ class CreateParamSetForm extends React.Component {
     this.changeActiveStep(0)();
     this.props.data.label = '';
     this.props.data.definition = [{ key: '', value: '' }];
-    this.props.data.usages = [''];
     this.props.updateItemsToBeCreated(this.props.index, this.props.data);
   };
 
@@ -140,7 +126,7 @@ class CreateParamSetForm extends React.Component {
     this.props.updateItemsToBeCreated(this.props.index, this.props.data);
   };
 
-  getStepContent = (step, classes, paramSetName, definition, usages, self) => {
+  getStepContent = (step, classes, paramSetName, definition, self) => {
     switch (step) {
       case 0:
         return (
@@ -164,6 +150,25 @@ class CreateParamSetForm extends React.Component {
                   options={paramOptions}
                 />
                 <TextField
+                  id="standard-select-currency"
+                  select
+                  label="Type"
+                  className={classes.textField}
+                  value={param.type}
+                  onChange={this.onDefinitionChange(index, 'type')}
+                  SelectProps={{
+                    MenuProps: {
+                      className: classes.menu,
+                    },
+                  }}
+                  margin="normal"
+                >
+                  <MenuItem value={'string'}>String</MenuItem>
+                  <MenuItem value={'number'}>Number</MenuItem>
+                  <MenuItem value={'boolean'}>Boolean</MenuItem>
+                  ))}
+                </TextField>
+                <TextField
                   label="Value"
                   className={classes.textField}
                   value={param.value}
@@ -185,45 +190,6 @@ class CreateParamSetForm extends React.Component {
                   <IconButton
                     aria-label="Delete"
                     onClick={this.deleteDefinitionRow(index)}
-                    className={classes.addDeleteButton}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                ) : (
-                  ''
-                )}
-              </div>
-            ))}
-          </form>
-        );
-
-      case 2:
-        return (
-          <form className={classes.container} noValidate autoComplete="off">
-            {usages.map((usageContext, index) => (
-              <div key={index}>
-                <TextField
-                  label="Usage Context Name"
-                  className={classes.textField}
-                  value={usageContext}
-                  onChange={this.onUsageContextChange(index)}
-                  margin="normal"
-                />
-                {index === usages.length - 1 ? (
-                  <IconButton
-                    onClick={this.addNewUsageRow}
-                    aria-label="Add"
-                    className={classes.addDeleteButton}
-                  >
-                    <AddIcon />
-                  </IconButton>
-                ) : (
-                  ''
-                )}
-                {usages.length > 1 ? (
-                  <IconButton
-                    aria-label="Delete"
-                    onClick={this.deleteUsageRow(index)}
                     className={classes.addDeleteButton}
                   >
                     <DeleteIcon />
@@ -271,8 +237,6 @@ class CreateParamSetForm extends React.Component {
           this.props.data.definition[0].key !== '' &&
           this.props.data.definition[0].value !== ''
         );
-      case 2:
-        return true;
       default:
         return true;
     }
@@ -281,13 +245,10 @@ class CreateParamSetForm extends React.Component {
   render() {
     const { classes, data, collapse, isLast, setCollapse } = this.props;
     if (!data.definition || data.definition.length === 0) {
-      data.definition = [{ key: '', value: '' }];
+      data.definition = [{ key: '', value: '', type: 'string' }];
     }
-    if (!data.usages || data.usages.length === 0) {
-      data.usages = [''];
-    }
-    const { definition, usages } = data;
-    const { activeStep } = this.state;
+    const { definition } = data;
+    const { activeStep, copyNumber } = this.state;
     if (collapse === true && activeStep < 4) {
       this.setState(() => ({
         activeStep: 4,
@@ -332,21 +293,22 @@ class CreateParamSetForm extends React.Component {
                 )}
               </StepLabel>
               <StepContent>
-                {this.getStepContent(index, classes, paramSetName, definition, usages, this)}
+                {this.getStepContent(index, classes, paramSetName, definition, this)}
                 <div className={classes.actionsContainer}>
-                  <div>
-                    {index === 0 ? (
-                      ''
-                    ) : (
-                      <Button
-                        disabled={activeStep === 0}
-                        onClick={this.handleBack}
-                        className={classes.actionButton}
-                      >
-                        Back
-                      </Button>
-                    )}
-
+                  {index === 0 ? (
+                    ''
+                  ) : (
+                    <Button
+                      color="default"
+                      disabled={activeStep === 0}
+                      className={classes.actionButton}
+                      onClick={this.handleBack}
+                      variant="contained"
+                    >
+                      Back
+                    </Button>
+                  )}
+                  {index === 0 && (
                     <Button
                       variant="contained"
                       color="primary"
@@ -355,15 +317,40 @@ class CreateParamSetForm extends React.Component {
                     >
                       Next
                     </Button>
-                  </div>
+                  )}
+                  {index === 1 && (
+                    <div className={classes.clonePrevious}>
+                      <Typography variant="subtitle1">Make</Typography>
+                      <TextField
+                        id="standard-number"
+                        value={copyNumber}
+                        type="number"
+                        className={classes.copyNumber}
+                        onChange={this.onCopyNumberChange}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        margin="normal"
+                      />
+                      <Typography variant="subtitle1">Copy </Typography>
+                      <Button
+                        color="primary"
+                        onClick={this.props.cloneParamSet(data, this.state.copyNumber)}
+                        className={classes.clonePreviousButton}
+                        variant="contained"
+                      >
+                        <FileCopyIcon />
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </StepContent>
             </Step>
           ))}
         </Stepper>
         {isLast && (
-          <Paper square elevation={0} className={classes.resetContainer}>
-            <Button onClick={this.reset} className={classes.actionButton}>
+          <Paper square elevation={0} className={classes.buttonsContainer}>
+            <Button className={classes.actionButton} onClick={this.reset}>
               Reset
             </Button>
             <Button

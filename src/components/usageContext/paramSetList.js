@@ -16,7 +16,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { Hidden } from '@material-ui/core';
 
 const styles = (theme) => ({
   card: {
@@ -58,7 +57,7 @@ function ListItemLink(props) {
   return <ListItem button component="a" {...props} />;
 }
 
-const options = ['Set collection as active', 'Remove collection from context'];
+const options = ['Set collection as active', 'Remove collection'];
 
 const ITEM_HEIGHT = 48;
 

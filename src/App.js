@@ -22,6 +22,7 @@ import CreateUsageContext from './components/usageContext/createUsageContext';
 import { Route, withRouter } from 'react-router-dom';
 import BackgroundImg from './assets/header.jpg';
 import ParamSet from './components/paramSet/paramSet';
+import ParamSetList from './components/paramSet/paramSetList';
 
 const drawerWidth = 240;
 
@@ -233,6 +234,10 @@ class Dashboard extends React.Component {
             <Route
               path="/paramSet"
               render={(props) => <ParamSet {...props} extra={someVariable} />}
+            />
+            <Route
+              path="/paramSets"
+              render={(props) => <ParamSetList {...props}/>}
             />
           </Typography>
         </main>
