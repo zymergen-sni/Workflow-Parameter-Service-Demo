@@ -15,14 +15,15 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from './components/nav/nav';
-import UsageContextList from './components/usageContext/usageContextList';
+import UsageContextList from './components/usageContext/usageContexts';
 import Settings from './components/settings/settings';
 import CreateParamSet from './components/paramSet/createParamSet';
 import CreateUsageContext from './components/usageContext/createUsageContext';
 import { Route, withRouter } from 'react-router-dom';
 import BackgroundImg from './assets/header.jpg';
 import ParamSet from './components/paramSet/paramSet';
-import ParamSetList from './components/paramSet/paramSetList';
+import ParamSetList from './components/paramSet/paramSets';
+import Associate from './components/associate/associate';
 
 const drawerWidth = 240;
 
@@ -147,9 +148,13 @@ class Dashboard extends React.Component {
       case '/paramSet':
         title = 'Parameter Set Details';
         break;
+      case '/paramSet':
+        title = 'Parameter sets';
+      case '/associate':
+        title = 'Associate';
 
       default:
-        title = 'Usage Context Set';
+        title = 'Usage Contexts';
         break;
     }
     if (this.state.pageName !== title) {
@@ -235,10 +240,8 @@ class Dashboard extends React.Component {
               path="/paramSet"
               render={(props) => <ParamSet {...props} extra={someVariable} />}
             />
-            <Route
-              path="/paramSets"
-              render={(props) => <ParamSetList {...props}/>}
-            />
+            <Route path="/paramSets" render={(props) => <ParamSetList {...props} />} />
+            <Route path="/associate" render={(props) => <Associate {...props} />} />
           </Typography>
         </main>
       </div>
