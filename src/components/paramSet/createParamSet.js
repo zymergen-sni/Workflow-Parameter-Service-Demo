@@ -219,7 +219,7 @@ class CreateParamSet extends React.Component {
             Edit the JSON or drag/drop a file here to create
           </Typography>
           <Divider className={classes.divider2} />
-          <UploadComponent className={classes.uploadComponent}></UploadComponent>
+          <UploadComponent></UploadComponent>
           {editMode ? (
             <TextField
               label="Type or paste JSON here"
