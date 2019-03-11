@@ -145,17 +145,6 @@ class CreateUsageContextsForm extends React.Component {
                   margin="normal"
                   onChange={this.onDefinitionChange(index, 'value')}
                 />
-                {index === parameterSets.length - 1 ? (
-                  <IconButton
-                    onClick={this.addNewRow}
-                    aria-label="Add"
-                    className={classes.addDeleteButton}
-                  >
-                    <AddIcon />
-                  </IconButton>
-                ) : (
-                  ''
-                )}
                 {parameterSets.length > 1 ? (
                   <IconButton
                     aria-label="Delete"
@@ -163,6 +152,17 @@ class CreateUsageContextsForm extends React.Component {
                     className={classes.addDeleteButton}
                   >
                     <DeleteIcon />
+                  </IconButton>
+                ) : (
+                  ''
+                )}
+                {index === parameterSets.length - 1 ? (
+                  <IconButton
+                    onClick={this.addNewRow}
+                    aria-label="Add"
+                    className={classes.addDeleteButton}
+                  >
+                    <AddIcon />
                   </IconButton>
                 ) : (
                   ''

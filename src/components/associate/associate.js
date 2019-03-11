@@ -241,17 +241,6 @@ class CreateAssociation extends React.Component {
                     onKeyUp={this.onKeyDownParamKey(index)}
                     onChange={this.updateParamValue(index)}
                   />
-                  {index === association.parameterSets.length - 1 ? (
-                    <IconButton
-                      onClick={this.addNewRow}
-                      aria-label="Add"
-                      className={classes.addDeleteButton}
-                    >
-                      <AddIcon />
-                    </IconButton>
-                  ) : (
-                    ''
-                  )}
                   {association.parameterSets.length > 1 ? (
                     <IconButton
                       aria-label="Delete"
@@ -259,6 +248,17 @@ class CreateAssociation extends React.Component {
                       className={classes.addDeleteButton}
                     >
                       <DeleteIcon />
+                    </IconButton>
+                  ) : (
+                    ''
+                  )}
+                  {index === association.parameterSets.length - 1 ? (
+                    <IconButton
+                      onClick={this.addNewRow}
+                      aria-label="Add"
+                      className={classes.addDeleteButton}
+                    >
+                      <AddIcon />
                     </IconButton>
                   ) : (
                     ''

@@ -175,17 +175,6 @@ class CreateParamSetForm extends React.Component {
                   margin="normal"
                   onChange={this.onDefinitionChange(index, 'value')}
                 />
-                {index === definition.length - 1 ? (
-                  <IconButton
-                    onClick={this.addNewDefinitionRow}
-                    aria-label="Add"
-                    className={classes.addDeleteButton}
-                  >
-                    <AddIcon />
-                  </IconButton>
-                ) : (
-                  ''
-                )}
                 {definition.length > 1 ? (
                   <IconButton
                     aria-label="Delete"
@@ -193,6 +182,17 @@ class CreateParamSetForm extends React.Component {
                     className={classes.addDeleteButton}
                   >
                     <DeleteIcon />
+                  </IconButton>
+                ) : (
+                  ''
+                )}
+                {index === definition.length - 1 ? (
+                  <IconButton
+                    onClick={this.addNewDefinitionRow}
+                    aria-label="Add"
+                    className={classes.addDeleteButton}
+                  >
+                    <AddIcon />
                   </IconButton>
                 ) : (
                   ''
