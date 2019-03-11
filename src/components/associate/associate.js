@@ -23,8 +23,9 @@ const styles = (theme) => ({
   },
   majorButton: { float: 'right', margin: 20 },
   title1Div: {
-    width: '100%',
     display: 'inline-block',
+    borderBottom: '1px solid #ccc',
+    paddingBottom: 10,
   },
   title1: {
     float: 'left',
@@ -33,13 +34,7 @@ const styles = (theme) => ({
   title2: {
     fontWeight: 'bold',
   },
-  or: {
-    float: 'left',
-    marginLeft: 100,
-  },
   formsDiv: { display: 'inline-block' },
-  divider1: { width: 290 },
-  divider2: { marginBottom: 30, marginTop: 10 },
   usageContextGrid: {
     display: 'flex',
     flexDirection: 'column',
@@ -92,16 +87,6 @@ class CreateAssociation extends React.Component {
     this.updateassociation(this.state.association);
   };
 
-  onDefinitionChange = (index, name) => (event) => {
-    let parameterSets = this.state.association.parameterSets.slice();
-    parameterSets[index][name] = event.target.value;
-    if (index === parameterSets.length - 1) {
-      parameterSets = [...parameterSets, { key: '', value: '' }];
-    }
-    this.state.association.parameterSets = parameterSets;
-    this.updateassociation(this.state.association);
-  };
-
   addNewRow = (dataSet) => {
     let parameterSets = this.state.association.parameterSets.slice();
     parameterSets = [...parameterSets, { key: '', value: '' }];
@@ -123,9 +108,30 @@ class CreateAssociation extends React.Component {
     this.updateassociation(this.state.association);
   };
 
+  updateParamValue = (index) => (event) => {
+    let parameterSets = this.state.association.parameterSets.slice();
+    parameterSets[index].value = event.target.value;
+    this.state.association.parameterSets = parameterSets;
+    this.updateassociation({ ...this.state.association, parameterSets });
+  };
+
   updateParamKey = (val, index) => {
-    this.state.association.parameterSets[index].key = val;
-    this.updateassociation(this.state.association);
+    let parameterSets = this.state.association.parameterSets.slice();
+    parameterSets[index].key = val;
+    if (!parameterSets[index].isVariableEdited) {
+      parameterSets[index].value = val;
+    }
+    if (index === parameterSets.length - 1) {
+      parameterSets = [...parameterSets, { key: '', value: '' }];
+    }
+    this.updateassociation({ ...this.state.association, parameterSets });
+  };
+
+  onKeyDownParamKey = (index) => () => {
+    Object.defineProperty(this.state.association.parameterSets[index], 'isVariableEdited', {
+      value: true,
+      enumerable: false,
+    });
   };
 
   updateUsageContext = (val) => {
@@ -156,62 +162,14 @@ class CreateAssociation extends React.Component {
 
     return (
       <Grid container spacing={24}>
-        <Grid item xs={7}>
-          <div className={classes.title1Div}>
-            <Typography variant="h6" className={classes.title1}>
-              New parameter sets
-            </Typography>
-          </div>
-          <Divider className={classes.divider1} />
-          <div className={classes.formsDiv}>
-            <form className={classes.container} noValidate autoComplete="off">
-              {association.parameterSets.map((param, index) => (
-                <div key={index}>
-                  <AutocompleteComponent
-                    updateParentState={this.updateParamKey}
-                    index={index}
-                    value={param.key}
-                    options={paramOptions}
-                  />
-                  <TextField
-                    label="Value"
-                    className={classes.textField}
-                    value={param.value}
-                    margin="normal"
-                    onChange={this.onDefinitionChange(index, 'value')}
-                  />
-                  {index === association.parameterSets.length - 1 ? (
-                    <IconButton
-                      onClick={this.addNewRow}
-                      aria-label="Add"
-                      className={classes.addDeleteButton}
-                    >
-                      <AddIcon />
-                    </IconButton>
-                  ) : (
-                    ''
-                  )}
-                  {association.parameterSets.length > 1 ? (
-                    <IconButton
-                      aria-label="Delete"
-                      onClick={this.deleteRow(index)}
-                      className={classes.addDeleteButton}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  ) : (
-                    ''
-                  )}
-                </div>
-              ))}
-            </form>
-          </div>
-        </Grid>
         <Grid item xs={5} className={classes.usageContextGrid}>
-          <Typography variant="h6" className={classes.title1}>
-            Usage context to be associated with
-          </Typography>
-
+          <div>
+            <div className={classes.title1Div}>
+              <Typography variant="h6" className={classes.title1}>
+                Usage context to be associated with
+              </Typography>
+            </div>
+          </div>
           <div>
             <AutocompleteComponent
               updateParentState={this.updateUsageContext}
@@ -253,6 +211,62 @@ class CreateAssociation extends React.Component {
               </div>
             </div>
           )}
+        </Grid>
+
+        <Grid item xs={7}>
+          <div>
+            <div className={classes.title1Div}>
+              <Typography variant="h6" className={classes.title1}>
+                New parameter set mappings
+              </Typography>
+            </div>
+          </div>
+          <div className={classes.formsDiv}>
+            <form className={classes.container} noValidate autoComplete="off">
+              {association.parameterSets.map((param, index) => (
+                <div key={index}>
+                  <AutocompleteComponent
+                    updateParentState={this.updateParamKey}
+                    label="Param Set"
+                    index={index}
+                    value={param.key}
+                    options={paramOptions}
+                  />
+                  <TextField
+                    label="Variable Name"
+                    placeholder="test"
+                    className={classes.textField}
+                    value={param.value}
+                    margin="normal"
+                    onKeyUp={this.onKeyDownParamKey(index)}
+                    onChange={this.updateParamValue(index)}
+                  />
+                  {index === association.parameterSets.length - 1 ? (
+                    <IconButton
+                      onClick={this.addNewRow}
+                      aria-label="Add"
+                      className={classes.addDeleteButton}
+                    >
+                      <AddIcon />
+                    </IconButton>
+                  ) : (
+                    ''
+                  )}
+                  {association.parameterSets.length > 1 ? (
+                    <IconButton
+                      aria-label="Delete"
+                      onClick={this.deleteRow(index)}
+                      className={classes.addDeleteButton}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  ) : (
+                    ''
+                  )}
+                </div>
+              ))}
+            </form>
+          </div>
         </Grid>
       </Grid>
     );

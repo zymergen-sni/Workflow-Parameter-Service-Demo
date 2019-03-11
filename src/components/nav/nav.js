@@ -3,7 +3,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListSubheader from "@material-ui/core/ListSubheader";
-import DashboardIcon from "@material-ui/icons/Dashboard";
+import LinkIcon from "@material-ui/icons/Link";
 import AddIcon from "@material-ui/icons/Add";
 import SettingsIcon from "@material-ui/icons/Settings";
 import BubbleChartIcon from "@material-ui/icons/BubbleChart";
@@ -42,6 +42,14 @@ export const mainListItems = (
           <AddIcon />
         </ListItemIcon>
         <ListItemText primary="Create Usage Context" />
+      </ListItem>
+    </Link>
+    <Link to="/associate">
+      <ListItem button>
+        <ListItemIcon>
+          <LinkIcon />
+        </ListItemIcon>
+        <ListItemText primary="Create association" />
       </ListItem>
     </Link>
     <Link to="/settings">
